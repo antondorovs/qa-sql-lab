@@ -16,6 +16,6 @@ Topics:
 Status: Active Learning Project
 
 git add .
-git commit -m "Initialize SQL QA practice repository"
+git commit -m "SQL QA practice"
 git push origin main
 git push gitlab main
