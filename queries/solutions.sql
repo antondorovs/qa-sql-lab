@@ -209,3 +209,84 @@ FROM orders
 WHERE id = 5;
 
 ROLLBACK;
+
+-- 23. Use a CTE to calculate order count and total order amount for each user.
+WITH order_totals AS (
+    SELECT
+        user_id,
+        COUNT(*) AS order_count,
+        SUM(amount) AS total_order_amount
+    FROM orders
+    GROUP BY user_id
+)
+SELECT
+    u.id AS user_id,
+    u.email,
+    COALESCE(ot.order_count, 0) AS order_count,
+    COALESCE(ot.total_order_amount, 0.00) AS total_order_amount
+FROM users u
+LEFT JOIN order_totals ot
+    ON u.id = ot.user_id
+ORDER BY u.id;
+
+-- 24. Use multiple CTEs to return only orders with missing or inconsistent payments.
+WITH order_details AS (
+    SELECT
+        o.id AS order_id,
+        o.order_number,
+        o.status AS order_status,
+        o.amount AS order_amount,
+        p.status AS payment_status,
+        p.amount AS payment_amount
+    FROM orders o
+    LEFT JOIN payments p
+        ON o.id = p.order_id
+),
+validation_results AS (
+    SELECT
+        *,
+        CASE
+            WHEN payment_status IS NULL THEN 'MISSING_PAYMENT'
+            WHEN order_amount <> payment_amount THEN 'AMOUNT_MISMATCH'
+            WHEN order_status = 'PAID' AND payment_status <> 'SUCCESS'
+                THEN 'PAYMENT_NOT_SUCCESSFUL'
+            ELSE 'CONSISTENT'
+        END AS qa_status
+    FROM order_details
+)
+SELECT *
+FROM validation_results
+WHERE qa_status <> 'CONSISTENT'
+ORDER BY order_id;
+
+-- 25. Use a recursive CTE to generate dates from 2026-06-01 through 2026-06-07.
+WITH RECURSIVE date_range AS (
+    SELECT DATE '2026-06-01' AS report_date
+
+    UNION ALL
+
+    SELECT report_date + 1
+    FROM date_range
+    WHERE report_date < DATE '2026-06-07'
+)
+SELECT report_date
+FROM date_range
+ORDER BY report_date;
+
+-- 26. Query active_user_order_summary for active users without orders.
+SELECT *
+FROM active_user_order_summary
+WHERE order_count = 0
+ORDER BY user_id;
+
+-- 27. Query order_payment_validation for all rows where qa_status is not CONSISTENT.
+SELECT *
+FROM order_payment_validation
+WHERE qa_status <> 'CONSISTENT'
+ORDER BY order_id;
+
+-- 28. Count validation results by qa_status using order_payment_validation.
+SELECT qa_status, COUNT(*) AS result_count
+FROM order_payment_validation
+GROUP BY qa_status
+ORDER BY qa_status;

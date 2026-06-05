@@ -44,3 +44,15 @@
 -- 21. Write an assertion query that returns successful payments where amount differs from the order amount.
 
 -- 22. Write a safe transaction that updates one order status, verifies it, and rolls it back.
+
+-- 23. Use a CTE to calculate order count and total order amount for each user.
+
+-- 24. Use multiple CTEs to return only orders with missing or inconsistent payments.
+
+-- 25. Use a recursive CTE to generate dates from 2026-06-01 through 2026-06-07.
+
+-- 26. Query active_user_order_summary for active users without orders.
+
+-- 27. Query order_payment_validation for all rows where qa_status is not CONSISTENT.
+
+-- 28. Count validation results by qa_status using order_payment_validation.

@@ -23,6 +23,8 @@ Key concepts:
 - `JOIN` combines related data from multiple tables.
 - `CASE` creates conditional labels or categories.
 - Subqueries let one query use the result of another query.
+- Common table expressions name intermediate query results with `WITH`.
+- Views expose reusable queries as virtual tables.
 - Window functions calculate values across related rows without collapsing the result set.
 
 ## QA mindset

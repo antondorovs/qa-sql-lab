@@ -27,5 +27,7 @@ Database validation checks whether stored data matches expected application beha
 - JOINs for relationship checks.
 - Aggregations for duplicate and total checks.
 - Subqueries for existence and threshold checks.
+- CTEs for readable multi-stage validation.
+- Views for reusable QA reports.
 - CASE expressions for categorizing risky records.
 - Window functions for ordering, ranking, and sequence validation.
