@@ -19,13 +19,13 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_DB: qa_sql_lab
+          POSTGRES_DB: qa-sql-lab
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres -d qa_sql_lab"
+          --health-cmd "pg_isready -U postgres -d qa-sql-lab"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -33,7 +33,7 @@ jobs:
     env:
       PGHOST: localhost
       PGPORT: 5432
-      PGDATABASE: qa_sql_lab
+      PGDATABASE: qa-sql-lab
       PGUSER: postgres
       PGPASSWORD: postgres
 

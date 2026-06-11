@@ -17,7 +17,7 @@ The checks treat the known bad records as test fixtures. A duplicate email or or
 Create an empty PostgreSQL database and run:
 
 ```bash
-psql -d qa_sql_lab -v ON_ERROR_STOP=1 -f tests/run_all.sql
+psql -d qa-sql-lab -v ON_ERROR_STOP=1 -f tests/run_all.sql
 ```
 
 The runner resets the lab tables and views before loading the sample data. Do not run it against a database containing data you need to keep.

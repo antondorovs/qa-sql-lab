@@ -2,12 +2,12 @@ stages:
   - test
 
 variables:
-  POSTGRES_DB: qa_sql_lab
+  POSTGRES_DB: qa-sql-lab
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   PGHOST: postgres
   PGPORT: "5432"
-  PGDATABASE: qa_sql_lab
+  PGDATABASE: qa-sql-lab
   PGUSER: postgres
   PGPASSWORD: postgres
 

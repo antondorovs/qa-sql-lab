@@ -32,7 +32,7 @@ or changed primary keys.
 Run:
 
 ```bash
-psql -d qa_sql_lab -f queries/schema_validation_queries.sql
+psql -d qa-sql-lab -f queries/schema_validation_queries.sql
 ```
 
 The first two result sets should be empty. The final result set prints the

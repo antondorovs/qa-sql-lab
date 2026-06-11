@@ -54,16 +54,16 @@ queries/
 From a PostgreSQL database:
 
 ```bash
-psql -d qa_sql_lab -f datasets/reset.sql
-psql -d qa_sql_lab -f datasets/schema.sql
-psql -d qa_sql_lab -f datasets/seed_data.sql
-psql -d qa_sql_lab -f datasets/views.sql
+psql -d qa-sql-lab -f datasets/reset.sql
+psql -d qa-sql-lab -f datasets/schema.sql
+psql -d qa-sql-lab -f datasets/seed_data.sql
+psql -d qa-sql-lab -f datasets/views.sql
 ```
 
 Then run examples or validation checks:
 
 ```bash
-psql -d qa_sql_lab -f queries/qa_validation_queries.sql
+psql -d qa-sql-lab -f queries/qa_validation_queries.sql
 ```
 
 ## Automated Validation
@@ -71,10 +71,14 @@ psql -d qa_sql_lab -f queries/qa_validation_queries.sql
 Run the complete test suite against an empty PostgreSQL database:
 
 ```bash
-psql -d qa_sql_lab -v ON_ERROR_STOP=1 -f tests/run_all.sql
+psql -d qa-sql-lab -v ON_ERROR_STOP=1 -f tests/run_all.sql
 ```
 
 The suite rebuilds the lab, checks expected data-quality scenarios and executes every query file. GitHub Actions runs the same suite for pushes and pull requests targeting `main`.
+
+The hyphenated database name works directly with `psql`, `POSTGRES_DB`, and
+`PGDATABASE`. When the name is used as an identifier inside a SQL statement,
+quote it as `"qa-sql-lab"`.
 
 GitLab CI runs the same PostgreSQL validation after changes reach the default
 branch or a merge request. Both platforms use `tests/run_all.sql` as the single
