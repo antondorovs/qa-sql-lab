@@ -11,6 +11,9 @@
 \echo 'Checking dataset contracts'
 \ir data_contract.sql
 
+\echo 'Checking schema contracts'
+\ir schema_contract.sql
+
 \echo 'Checking view contracts'
 \ir view_contract.sql
 
@@ -25,6 +28,7 @@
 \ir ../queries/cte.sql
 \ir ../queries/joins.sql
 \ir ../queries/qa_validation_queries.sql
+\ir ../queries/schema_validation_queries.sql
 \ir ../queries/solutions.sql
 \ir ../queries/subqueries.sql
 \ir ../queries/tasks.sql

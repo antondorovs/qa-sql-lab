@@ -1,5 +1,190 @@
 -- Reusable PostgreSQL views for QA SQL Lab
 
+CREATE OR REPLACE VIEW column_schema_contract_report AS
+WITH expected_columns (
+    table_name,
+    column_name,
+    ordinal_position,
+    data_type,
+    character_maximum_length,
+    numeric_precision,
+    numeric_scale,
+    is_nullable
+) AS (
+    VALUES
+        ('users', 'id', 1, 'integer', NULL, 32, 0, 'NO'),
+        ('users', 'first_name', 2, 'character varying', 50, NULL, NULL, 'NO'),
+        ('users', 'last_name', 3, 'character varying', 50, NULL, NULL, 'NO'),
+        ('users', 'email', 4, 'character varying', 120, NULL, NULL, 'NO'),
+        ('users', 'status', 5, 'character varying', 20, NULL, NULL, 'NO'),
+        ('users', 'country', 6, 'character varying', 60, NULL, NULL, 'NO'),
+        ('users', 'age', 7, 'integer', NULL, 32, 0, 'YES'),
+        (
+            'users',
+            'created_at',
+            8,
+            'timestamp without time zone',
+            NULL,
+            NULL,
+            NULL,
+            'NO'
+        ),
+        (
+            'users',
+            'deleted_at',
+            9,
+            'timestamp without time zone',
+            NULL,
+            NULL,
+            NULL,
+            'YES'
+        ),
+        ('addresses', 'id', 1, 'integer', NULL, 32, 0, 'NO'),
+        ('addresses', 'user_id', 2, 'integer', NULL, 32, 0, 'YES'),
+        ('addresses', 'city', 3, 'character varying', 80, NULL, NULL, 'NO'),
+        ('addresses', 'country', 4, 'character varying', 60, NULL, NULL, 'NO'),
+        ('addresses', 'postal_code', 5, 'character varying', 20, NULL, NULL, 'YES'),
+        ('addresses', 'is_primary', 6, 'boolean', NULL, NULL, NULL, 'NO'),
+        (
+            'addresses',
+            'created_at',
+            7,
+            'timestamp without time zone',
+            NULL,
+            NULL,
+            NULL,
+            'NO'
+        ),
+        ('orders', 'id', 1, 'integer', NULL, 32, 0, 'NO'),
+        ('orders', 'user_id', 2, 'integer', NULL, 32, 0, 'YES'),
+        ('orders', 'order_number', 3, 'character varying', 30, NULL, NULL, 'NO'),
+        ('orders', 'status', 4, 'character varying', 20, NULL, NULL, 'NO'),
+        ('orders', 'amount', 5, 'numeric', NULL, 10, 2, 'NO'),
+        (
+            'orders',
+            'created_at',
+            6,
+            'timestamp without time zone',
+            NULL,
+            NULL,
+            NULL,
+            'NO'
+        ),
+        ('payments', 'id', 1, 'integer', NULL, 32, 0, 'NO'),
+        ('payments', 'order_id', 2, 'integer', NULL, 32, 0, 'YES'),
+        (
+            'payments',
+            'payment_method',
+            3,
+            'character varying',
+            30,
+            NULL,
+            NULL,
+            'NO'
+        ),
+        ('payments', 'status', 4, 'character varying', 20, NULL, NULL, 'NO'),
+        ('payments', 'amount', 5, 'numeric', NULL, 10, 2, 'NO'),
+        (
+            'payments',
+            'paid_at',
+            6,
+            'timestamp without time zone',
+            NULL,
+            NULL,
+            NULL,
+            'YES'
+        )
+),
+actual_columns AS (
+    SELECT
+        table_name::TEXT,
+        column_name::TEXT,
+        ordinal_position::INTEGER,
+        data_type::TEXT,
+        character_maximum_length::INTEGER,
+        numeric_precision::INTEGER,
+        numeric_scale::INTEGER,
+        is_nullable::TEXT
+    FROM information_schema.columns
+    WHERE table_schema = CURRENT_SCHEMA()
+      AND table_name IN ('users', 'addresses', 'orders', 'payments')
+)
+SELECT
+    COALESCE(e.table_name, a.table_name) AS table_name,
+    COALESCE(e.column_name, a.column_name) AS column_name,
+    e.ordinal_position AS expected_ordinal_position,
+    a.ordinal_position AS actual_ordinal_position,
+    e.data_type AS expected_data_type,
+    a.data_type AS actual_data_type,
+    e.character_maximum_length AS expected_character_maximum_length,
+    a.character_maximum_length AS actual_character_maximum_length,
+    e.numeric_precision AS expected_numeric_precision,
+    a.numeric_precision AS actual_numeric_precision,
+    e.numeric_scale AS expected_numeric_scale,
+    a.numeric_scale AS actual_numeric_scale,
+    e.is_nullable AS expected_is_nullable,
+    a.is_nullable AS actual_is_nullable,
+    CASE
+        WHEN e.column_name IS NULL THEN 'UNEXPECTED_COLUMN'
+        WHEN a.column_name IS NULL THEN 'MISSING_COLUMN'
+        WHEN e.ordinal_position IS DISTINCT FROM a.ordinal_position
+            THEN 'POSITION_MISMATCH'
+        WHEN e.data_type IS DISTINCT FROM a.data_type
+            OR e.character_maximum_length
+                IS DISTINCT FROM a.character_maximum_length
+            OR e.numeric_precision IS DISTINCT FROM a.numeric_precision
+            OR e.numeric_scale IS DISTINCT FROM a.numeric_scale
+            THEN 'TYPE_MISMATCH'
+        WHEN e.is_nullable IS DISTINCT FROM a.is_nullable
+            THEN 'NULLABILITY_MISMATCH'
+        ELSE 'MATCH'
+    END AS contract_status
+FROM expected_columns e
+FULL OUTER JOIN actual_columns a
+    ON e.table_name = a.table_name
+   AND e.column_name = a.column_name;
+
+CREATE OR REPLACE VIEW primary_key_contract_report AS
+WITH expected_primary_keys (table_name, column_name, ordinal_position) AS (
+    VALUES
+        ('users', 'id', 1),
+        ('addresses', 'id', 1),
+        ('orders', 'id', 1),
+        ('payments', 'id', 1)
+),
+actual_primary_keys AS (
+    SELECT
+        tc.table_name::TEXT,
+        kcu.column_name::TEXT,
+        kcu.ordinal_position::INTEGER
+    FROM information_schema.table_constraints tc
+    INNER JOIN information_schema.key_column_usage kcu
+        ON tc.constraint_catalog = kcu.constraint_catalog
+       AND tc.constraint_schema = kcu.constraint_schema
+       AND tc.constraint_name = kcu.constraint_name
+    WHERE tc.table_schema = CURRENT_SCHEMA()
+      AND tc.constraint_type = 'PRIMARY KEY'
+      AND tc.table_name IN ('users', 'addresses', 'orders', 'payments')
+)
+SELECT
+    COALESCE(e.table_name, a.table_name) AS table_name,
+    e.column_name AS expected_column_name,
+    a.column_name AS actual_column_name,
+    e.ordinal_position AS expected_ordinal_position,
+    a.ordinal_position AS actual_ordinal_position,
+    CASE
+        WHEN e.table_name IS NULL THEN 'UNEXPECTED_PRIMARY_KEY'
+        WHEN a.table_name IS NULL THEN 'MISSING_PRIMARY_KEY'
+        WHEN e.column_name IS DISTINCT FROM a.column_name
+            OR e.ordinal_position IS DISTINCT FROM a.ordinal_position
+            THEN 'PRIMARY_KEY_MISMATCH'
+        ELSE 'MATCH'
+    END AS contract_status
+FROM expected_primary_keys e
+FULL OUTER JOIN actual_primary_keys a
+    ON e.table_name = a.table_name
+   AND e.column_name = a.column_name;
+
 CREATE OR REPLACE VIEW active_user_order_summary AS
 SELECT
     u.id AS user_id,

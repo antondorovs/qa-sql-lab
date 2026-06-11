@@ -20,6 +20,7 @@ datasets/
 docs/
   automated_validation.md
   data_quality_baselines.md
+  schema_contracts.md
   sql_basics.md
   qa_database_validation.md
   postgresql_qa_tips.md
@@ -29,6 +30,7 @@ tests/
   run_all.sql             -- complete PostgreSQL test runner
   data_contract.sql       -- sample data expectations
   quality_report_contract.sql -- data quality baseline expectations
+  schema_contract.sql     -- table and primary key expectations
   view_contract.sql       -- reusable view expectations
 
 queries/
@@ -38,6 +40,7 @@ queries/
   case_expressions.sql
   cte.sql
   joins.sql
+  schema_validation_queries.sql
   subqueries.sql
   tasks.sql
   solutions.sql
@@ -91,6 +94,16 @@ ORDER BY severity, rule_id;
 It distinguishes expected fixture counts from regressions and improvements.
 See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 
+## Schema Contracts
+
+The test suite compares the live PostgreSQL schema with explicit contracts for
+all 28 table columns and four primary keys. This catches missing columns,
+unexpected columns, type changes, nullability changes, column reordering, and
+primary key drift.
+
+Run `queries/schema_validation_queries.sql` to investigate differences. See
+`docs/schema_contracts.md` for the migration workflow.
+
 ## Topics
 
 - SQL basics
@@ -104,6 +117,7 @@ See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 - CASE expressions
 - Window functions
 - Transaction safety
+- Database schema contracts
 - Data quality checks
 - Data quality baselines
 - QA database validation
