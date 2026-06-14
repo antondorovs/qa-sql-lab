@@ -39,3 +39,15 @@ CREATE TABLE payments (
     amount NUMERIC(10, 2) NOT NULL,
     paid_at TIMESTAMP
 );
+
+CREATE INDEX users_email_idx
+    ON users (email);
+
+CREATE INDEX addresses_user_id_idx
+    ON addresses (user_id);
+
+CREATE INDEX orders_user_id_idx
+    ON orders (user_id);
+
+CREATE INDEX payments_order_id_idx
+    ON payments (order_id);

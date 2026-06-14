@@ -185,6 +185,79 @@ FULL OUTER JOIN actual_primary_keys a
     ON e.table_name = a.table_name
    AND e.column_name = a.column_name;
 
+CREATE OR REPLACE VIEW index_contract_report AS
+WITH expected_indexes (
+    index_name,
+    table_name,
+    indexed_columns,
+    is_unique
+) AS (
+    VALUES
+        ('users_email_idx', 'users', ARRAY['email']::TEXT[], FALSE),
+        (
+            'addresses_user_id_idx',
+            'addresses',
+            ARRAY['user_id']::TEXT[],
+            FALSE
+        ),
+        ('orders_user_id_idx', 'orders', ARRAY['user_id']::TEXT[], FALSE),
+        (
+            'payments_order_id_idx',
+            'payments',
+            ARRAY['order_id']::TEXT[],
+            FALSE
+        )
+),
+actual_indexes AS (
+    SELECT
+        index_class.relname::TEXT AS index_name,
+        table_class.relname::TEXT AS table_name,
+        ARRAY_AGG(
+            attribute.attname::TEXT
+            ORDER BY index_column.ordinality
+        ) AS indexed_columns,
+        index_metadata.indisunique AS is_unique
+    FROM pg_index index_metadata
+    INNER JOIN pg_class table_class
+        ON table_class.oid = index_metadata.indrelid
+    INNER JOIN pg_namespace table_namespace
+        ON table_namespace.oid = table_class.relnamespace
+    INNER JOIN pg_class index_class
+        ON index_class.oid = index_metadata.indexrelid
+    CROSS JOIN LATERAL UNNEST(index_metadata.indkey)
+        WITH ORDINALITY AS index_column(attribute_number, ordinality)
+    INNER JOIN pg_attribute attribute
+        ON attribute.attrelid = table_class.oid
+       AND attribute.attnum = index_column.attribute_number
+    WHERE table_namespace.nspname = CURRENT_SCHEMA()
+      AND table_class.relname IN ('users', 'addresses', 'orders', 'payments')
+      AND index_metadata.indisprimary = FALSE
+    GROUP BY
+        index_class.relname,
+        table_class.relname,
+        index_metadata.indisunique
+)
+SELECT
+    COALESCE(e.index_name, a.index_name) AS index_name,
+    e.table_name AS expected_table_name,
+    a.table_name AS actual_table_name,
+    e.indexed_columns AS expected_indexed_columns,
+    a.indexed_columns AS actual_indexed_columns,
+    e.is_unique AS expected_is_unique,
+    a.is_unique AS actual_is_unique,
+    CASE
+        WHEN e.index_name IS NULL THEN 'UNEXPECTED_INDEX'
+        WHEN a.index_name IS NULL THEN 'MISSING_INDEX'
+        WHEN e.table_name IS DISTINCT FROM a.table_name
+            OR e.indexed_columns IS DISTINCT FROM a.indexed_columns
+            OR e.is_unique IS DISTINCT FROM a.is_unique
+            THEN 'INDEX_DEFINITION_MISMATCH'
+        ELSE 'MATCH'
+    END AS contract_status
+FROM expected_indexes e
+FULL OUTER JOIN actual_indexes a
+    ON e.index_name = a.index_name;
+
 CREATE OR REPLACE VIEW active_user_order_summary AS
 SELECT
     u.id AS user_id,

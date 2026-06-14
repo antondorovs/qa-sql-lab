@@ -101,9 +101,9 @@ See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 ## Schema Contracts
 
 The test suite compares the live PostgreSQL schema with explicit contracts for
-all 28 table columns and four primary keys. This catches missing columns,
-unexpected columns, type changes, nullability changes, column reordering, and
-primary key drift.
+all 28 table columns, four primary keys, and four supporting indexes. This
+catches missing or unexpected objects, type changes, nullability changes,
+column reordering, primary key drift, and index definition drift.
 
 Run `queries/schema_validation_queries.sql` to investigate differences. See
 `docs/schema_contracts.md` for the migration workflow.
@@ -122,6 +122,7 @@ Run `queries/schema_validation_queries.sql` to investigate differences. See
 - Window functions
 - Transaction safety
 - Database schema contracts
+- PostgreSQL index contracts
 - Data quality checks
 - Data quality baselines
 - QA database validation

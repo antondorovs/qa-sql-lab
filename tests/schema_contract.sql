@@ -41,5 +41,24 @@ BEGIN
             'Expected every primary key contract to match, found % deviations',
             actual_count;
     END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM index_contract_report;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION 'Expected 4 index contracts, found %', actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM index_contract_report
+    WHERE contract_status <> 'MATCH';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected every index contract to match, found % deviations',
+            actual_count;
+    END IF;
 END
 $$;
