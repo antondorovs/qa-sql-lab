@@ -103,3 +103,42 @@ FROM orders o
 INNER JOIN payments p
     ON o.id = p.order_id
 WHERE o.amount <> p.amount;
+
+-- Users deleted before they were created
+SELECT id, email, created_at, deleted_at
+FROM users
+WHERE deleted_at < created_at;
+
+-- Addresses created before their users
+SELECT
+    a.id AS address_id,
+    a.user_id,
+    u.created_at AS user_created_at,
+    a.created_at AS address_created_at
+FROM addresses a
+INNER JOIN users u
+    ON a.user_id = u.id
+WHERE a.created_at < u.created_at;
+
+-- Orders created before their users
+SELECT
+    o.id AS order_id,
+    o.order_number,
+    o.user_id,
+    u.created_at AS user_created_at,
+    o.created_at AS order_created_at
+FROM orders o
+INNER JOIN users u
+    ON o.user_id = u.id
+WHERE o.created_at < u.created_at;
+
+-- Payments recorded before their orders
+SELECT
+    p.id AS payment_id,
+    p.order_id,
+    o.created_at AS order_created_at,
+    p.paid_at
+FROM payments p
+INNER JOIN orders o
+    ON p.order_id = o.id
+WHERE p.paid_at < o.created_at;

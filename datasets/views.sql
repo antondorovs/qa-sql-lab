@@ -457,6 +457,64 @@ WITH rule_results (
             WHERE o.status = 'PAID'
               AND p.id IS NULL
         )
+
+    UNION ALL
+
+    SELECT
+        'user_deleted_before_created',
+        'User deletion timestamps should not precede creation timestamps',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE deleted_at < created_at
+        )
+
+    UNION ALL
+
+    SELECT
+        'address_created_before_user',
+        'Addresses should not be created before their users',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM addresses a
+            INNER JOIN users u
+                ON a.user_id = u.id
+            WHERE a.created_at < u.created_at
+        )
+
+    UNION ALL
+
+    SELECT
+        'order_created_before_user',
+        'Orders should not be created before their users',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders o
+            INNER JOIN users u
+                ON o.user_id = u.id
+            WHERE o.created_at < u.created_at
+        )
+
+    UNION ALL
+
+    SELECT
+        'payment_created_before_order',
+        'Payment timestamps should not precede order creation timestamps',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            INNER JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.paid_at < o.created_at
+        )
 )
 SELECT
     rule_id,

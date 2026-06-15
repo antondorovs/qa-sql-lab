@@ -21,6 +21,7 @@ docs/
   automated_validation.md
   data_quality_baselines.md
   schema_contracts.md
+  temporal_data_validation.md
   sql_basics.md
   qa_database_validation.md
   postgresql_qa_tips.md
@@ -97,6 +98,8 @@ ORDER BY severity, rule_id;
 
 It distinguishes expected fixture counts from regressions and improvements.
 See `docs/data_quality_baselines.md` for the rule format and extension workflow.
+Temporal rules also detect impossible creation, payment, and deletion event
+sequences.
 
 ## Schema Contracts
 
@@ -125,6 +128,7 @@ Run `queries/schema_validation_queries.sql` to investigate differences. See
 - PostgreSQL index contracts
 - Data quality checks
 - Data quality baselines
+- Temporal data validation
 - QA database validation
 - Automated SQL regression testing
 - PostgreSQL practice

@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 10 THEN
-        RAISE EXCEPTION 'Expected 10 data quality rules, found %', actual_count;
+    IF actual_count <> 14 THEN
+        RAISE EXCEPTION 'Expected 14 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -28,8 +28,8 @@ BEGIN
     FROM data_quality_rule_report
     WHERE severity = 'CRITICAL';
 
-    IF actual_count <> 5 THEN
-        RAISE EXCEPTION 'Expected 5 critical data quality rules, found %', actual_count;
+    IF actual_count <> 7 THEN
+        RAISE EXCEPTION 'Expected 7 critical data quality rules, found %', actual_count;
     END IF;
 
     SELECT actual_issue_count
@@ -40,6 +40,22 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no successful payments without timestamps, found %',
+            actual_count;
+    END IF;
+
+    SELECT SUM(actual_issue_count)
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id IN (
+        'user_deleted_before_created',
+        'address_created_before_user',
+        'order_created_before_user',
+        'payment_created_before_order'
+    );
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no temporal consistency issues, found %',
             actual_count;
     END IF;
 END
