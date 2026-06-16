@@ -20,6 +20,7 @@ datasets/
 docs/
   automated_validation.md
   data_quality_baselines.md
+  domain_value_validation.md
   schema_contracts.md
   temporal_data_validation.md
   sql_basics.md
@@ -100,6 +101,7 @@ It distinguishes expected fixture counts from regressions and improvements.
 See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 Temporal rules also detect impossible creation, payment, and deletion event
 sequences.
+Domain rules validate status and payment-method fields against approved values.
 
 ## Schema Contracts
 
@@ -128,6 +130,7 @@ Run `queries/schema_validation_queries.sql` to investigate differences. See
 - PostgreSQL index contracts
 - Data quality checks
 - Data quality baselines
+- Domain value validation
 - Temporal data validation
 - QA database validation
 - Automated SQL regression testing

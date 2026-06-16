@@ -515,6 +515,58 @@ WITH rule_results (
                 ON p.order_id = o.id
             WHERE p.paid_at < o.created_at
         )
+
+    UNION ALL
+
+    SELECT
+        'invalid_user_status',
+        'User status should use an approved domain value',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE status NOT IN ('ACTIVE', 'INACTIVE', 'DELETED')
+        )
+
+    UNION ALL
+
+    SELECT
+        'invalid_order_status',
+        'Order status should use an approved domain value',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders
+            WHERE status NOT IN ('NEW', 'PAID', 'SHIPPED', 'CANCELLED')
+        )
+
+    UNION ALL
+
+    SELECT
+        'invalid_payment_status',
+        'Payment status should use an approved domain value',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE status NOT IN ('SUCCESS', 'PENDING', 'REFUNDED', 'FAILED')
+        )
+
+    UNION ALL
+
+    SELECT
+        'invalid_payment_method',
+        'Payment method should use an approved domain value',
+        'MEDIUM',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE payment_method NOT IN ('CARD', 'PAYPAL', 'BANK_TRANSFER')
+        )
 )
 SELECT
     rule_id,

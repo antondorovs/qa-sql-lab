@@ -142,3 +142,23 @@ FROM payments p
 INNER JOIN orders o
     ON p.order_id = o.id
 WHERE p.paid_at < o.created_at;
+
+-- Users with unsupported status values
+SELECT id, email, status
+FROM users
+WHERE status NOT IN ('ACTIVE', 'INACTIVE', 'DELETED');
+
+-- Orders with unsupported status values
+SELECT id, order_number, status
+FROM orders
+WHERE status NOT IN ('NEW', 'PAID', 'SHIPPED', 'CANCELLED');
+
+-- Payments with unsupported status values
+SELECT id, order_id, status
+FROM payments
+WHERE status NOT IN ('SUCCESS', 'PENDING', 'REFUNDED', 'FAILED');
+
+-- Payments with unsupported method values
+SELECT id, order_id, payment_method
+FROM payments
+WHERE payment_method NOT IN ('CARD', 'PAYPAL', 'BANK_TRANSFER');

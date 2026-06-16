@@ -22,6 +22,10 @@ that creation, payment, and deletion timestamps follow a valid business-event
 sequence. See `docs/temporal_data_validation.md` for the investigation
 workflow.
 
+Domain value rules validate status and payment-method fields against approved
+sets. See `docs/domain_value_validation.md` for the allowed values and review
+workflow.
+
 ## Review the report
 
 Load the schema, data, and views, then run:

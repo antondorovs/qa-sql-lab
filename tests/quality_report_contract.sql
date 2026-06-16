@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 14 THEN
-        RAISE EXCEPTION 'Expected 14 data quality rules, found %', actual_count;
+    IF actual_count <> 18 THEN
+        RAISE EXCEPTION 'Expected 18 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -56,6 +56,22 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no temporal consistency issues, found %',
+            actual_count;
+    END IF;
+
+    SELECT SUM(actual_issue_count)
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id IN (
+        'invalid_user_status',
+        'invalid_order_status',
+        'invalid_payment_status',
+        'invalid_payment_method'
+    );
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no domain value issues, found %',
             actual_count;
     END IF;
 END
