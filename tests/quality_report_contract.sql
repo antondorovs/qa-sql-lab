@@ -74,5 +74,36 @@ BEGIN
             'Expected no domain value issues, found %',
             actual_count;
     END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_summary;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION
+            'Expected 4 severity summary rows, found %',
+            actual_count;
+    END IF;
+
+    SELECT rule_count
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE severity = 'CRITICAL';
+
+    IF actual_count <> 7 THEN
+        RAISE EXCEPTION
+            'Expected 7 critical summary rules, found %',
+            actual_count;
+    END IF;
+
+    SELECT SUM(deviation_count)
+    INTO actual_count
+    FROM data_quality_rule_summary;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no summary deviations, found %',
+            actual_count;
+    END IF;
 END
 $$;

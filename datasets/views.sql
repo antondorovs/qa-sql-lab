@@ -581,3 +581,16 @@ SELECT
         ELSE 'IMPROVEMENT'
     END AS baseline_status
 FROM rule_results;
+
+CREATE OR REPLACE VIEW data_quality_rule_summary AS
+SELECT
+    severity,
+    COUNT(*) AS rule_count,
+    SUM(expected_issue_count) AS expected_issue_count,
+    SUM(actual_issue_count) AS actual_issue_count,
+    SUM(issue_count_delta) AS issue_count_delta,
+    COUNT(*) FILTER (
+        WHERE baseline_status <> 'MATCH'
+    ) AS deviation_count
+FROM data_quality_rule_report
+GROUP BY severity;

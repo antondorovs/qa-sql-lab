@@ -36,6 +36,14 @@ FROM data_quality_rule_report
 ORDER BY severity, rule_id;
 ```
 
+For a compact severity-level triage view, run:
+
+```sql
+SELECT *
+FROM data_quality_rule_summary
+ORDER BY severity;
+```
+
 A `REGRESSION` means more suspicious records exist than expected. An
 `IMPROVEMENT` means a known fixture disappeared. Both results require review
 because either can make exercises and regression tests unreliable.

@@ -19,6 +19,23 @@ ORDER BY
     END,
     rule_id;
 
+-- Severity summary for fast triage dashboards
+SELECT
+    severity,
+    rule_count,
+    expected_issue_count,
+    actual_issue_count,
+    issue_count_delta,
+    deviation_count
+FROM data_quality_rule_summary
+ORDER BY
+    CASE severity
+        WHEN 'CRITICAL' THEN 1
+        WHEN 'HIGH' THEN 2
+        WHEN 'MEDIUM' THEN 3
+        ELSE 4
+    END;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users
