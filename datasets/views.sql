@@ -299,6 +299,22 @@ LEFT JOIN users u
 FULL OUTER JOIN payments p
     ON o.id = p.order_id;
 
+CREATE OR REPLACE VIEW payment_method_summary AS
+SELECT
+    payment_method,
+    COUNT(*) AS payment_count,
+    COUNT(*) FILTER (WHERE status = 'SUCCESS') AS success_count,
+    COUNT(*) FILTER (WHERE status = 'FAILED') AS failed_count,
+    COUNT(*) FILTER (WHERE status = 'PENDING') AS pending_count,
+    COALESCE(SUM(amount), 0.00) AS total_payment_amount,
+    COALESCE(
+        SUM(amount) FILTER (WHERE status = 'SUCCESS'),
+        0.00
+    ) AS successful_payment_amount,
+    COUNT(*) FILTER (WHERE paid_at IS NULL) AS missing_paid_at_count
+FROM payments
+GROUP BY payment_method;
+
 CREATE OR REPLACE VIEW data_quality_rule_report AS
 WITH rule_results (
     rule_id,

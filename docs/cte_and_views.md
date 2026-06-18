@@ -35,5 +35,7 @@ The lab provides:
 
 - `active_user_order_summary` for active-user order metrics.
 - `order_payment_validation` for missing orders or users, payment status, and amount checks.
+- `payment_method_summary` for checkout coverage by payment method.
+- `data_quality_rule_summary` for severity-level data quality triage.
 
 Views do not store independent copies of these rows. Their results reflect the current data in the underlying tables.

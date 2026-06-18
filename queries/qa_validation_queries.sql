@@ -36,6 +36,19 @@ ORDER BY
         ELSE 4
     END;
 
+-- Payment method summary for checkout coverage review
+SELECT
+    payment_method,
+    payment_count,
+    success_count,
+    failed_count,
+    pending_count,
+    total_payment_amount,
+    successful_payment_amount,
+    missing_paid_at_count
+FROM payment_method_summary
+ORDER BY payment_method;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users

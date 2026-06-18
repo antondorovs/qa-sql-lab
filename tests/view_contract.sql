@@ -96,3 +96,45 @@ BEGIN
     END IF;
 END
 $$;
+
+DO $$
+DECLARE
+    actual_count INTEGER;
+    actual_missing_count INTEGER;
+    actual_total NUMERIC(10, 2);
+BEGIN
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM payment_method_summary;
+
+    IF actual_count <> 3 THEN
+        RAISE EXCEPTION
+            'Expected 3 payment method summary rows, found %',
+            actual_count;
+    END IF;
+
+    SELECT payment_count, total_payment_amount
+    INTO actual_count, actual_total
+    FROM payment_method_summary
+    WHERE payment_method = 'CARD';
+
+    IF actual_count <> 6 OR actual_total <> 515.40 THEN
+        RAISE EXCEPTION
+            'Unexpected CARD payment summary: count=%, total=%',
+            actual_count,
+            actual_total;
+    END IF;
+
+    SELECT pending_count, missing_paid_at_count
+    INTO actual_count, actual_missing_count
+    FROM payment_method_summary
+    WHERE payment_method = 'BANK_TRANSFER';
+
+    IF actual_count <> 1 OR actual_missing_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected BANK_TRANSFER payment summary: pending=%, missing_paid_at=%',
+            actual_count,
+            actual_missing_count;
+    END IF;
+END
+$$;
