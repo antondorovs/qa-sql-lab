@@ -273,6 +273,30 @@ WHERE u.status = 'ACTIVE'
   AND u.deleted_at IS NULL
 GROUP BY u.id, u.email, u.country;
 
+CREATE OR REPLACE VIEW country_user_order_summary AS
+WITH user_order_metrics AS (
+    SELECT
+        u.id AS user_id,
+        u.country,
+        u.status,
+        COUNT(o.id) AS order_count,
+        COALESCE(SUM(o.amount), 0.00) AS total_order_amount
+    FROM users u
+    LEFT JOIN orders o
+        ON u.id = o.user_id
+    WHERE u.deleted_at IS NULL
+    GROUP BY u.id, u.country, u.status
+)
+SELECT
+    country,
+    COUNT(*) AS user_count,
+    COUNT(*) FILTER (WHERE status = 'ACTIVE') AS active_user_count,
+    SUM(order_count) AS order_count,
+    COALESCE(SUM(total_order_amount), 0.00) AS total_order_amount,
+    COUNT(*) FILTER (WHERE order_count = 0) AS users_without_orders_count
+FROM user_order_metrics
+GROUP BY country;
+
 CREATE OR REPLACE VIEW order_payment_validation AS
 SELECT
     COALESCE(o.id, p.order_id) AS order_id,

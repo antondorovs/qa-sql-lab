@@ -106,6 +106,8 @@ The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment
 method and status.
+The `country_user_order_summary` view compares user and order coverage by
+country.
 
 ## Schema Contracts
 

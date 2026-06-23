@@ -34,6 +34,7 @@ Views are useful when the same QA report is run repeatedly. `CREATE OR REPLACE V
 The lab provides:
 
 - `active_user_order_summary` for active-user order metrics.
+- `country_user_order_summary` for country-level user and order coverage.
 - `order_payment_validation` for missing orders or users, payment status, and amount checks.
 - `payment_method_summary` for checkout coverage by payment method.
 - `data_quality_rule_summary` for severity-level data quality triage.

@@ -49,6 +49,17 @@ SELECT
 FROM payment_method_summary
 ORDER BY payment_method;
 
+-- Country summary for user and order coverage review
+SELECT
+    country,
+    user_count,
+    active_user_count,
+    order_count,
+    total_order_amount,
+    users_without_orders_count
+FROM country_user_order_summary
+ORDER BY country;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users

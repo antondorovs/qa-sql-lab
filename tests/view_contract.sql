@@ -39,6 +39,55 @@ $$;
 DO $$
 DECLARE
     actual_count INTEGER;
+    actual_active_count INTEGER;
+    actual_order_count INTEGER;
+    actual_without_orders_count INTEGER;
+    actual_total NUMERIC(10, 2);
+BEGIN
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM country_user_order_summary;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION
+            'Expected 4 country user order summary rows, found %',
+            actual_count;
+    END IF;
+
+    SELECT user_count, active_user_count, order_count, total_order_amount
+    INTO actual_count, actual_active_count, actual_order_count, actual_total
+    FROM country_user_order_summary
+    WHERE country = 'USA';
+
+    IF actual_count <> 2
+        OR actual_active_count <> 2
+        OR actual_order_count <> 3
+        OR actual_total <> 175.50 THEN
+        RAISE EXCEPTION
+            'Unexpected USA country summary: users=%, active=%, orders=%, total=%',
+            actual_count,
+            actual_active_count,
+            actual_order_count,
+            actual_total;
+    END IF;
+
+    SELECT active_user_count, users_without_orders_count
+    INTO actual_active_count, actual_without_orders_count
+    FROM country_user_order_summary
+    WHERE country = 'Canada';
+
+    IF actual_active_count <> 2 OR actual_without_orders_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected Canada country summary: active=%, without_orders=%',
+            actual_active_count,
+            actual_without_orders_count;
+    END IF;
+END
+$$;
+
+DO $$
+DECLARE
+    actual_count INTEGER;
 BEGIN
     SELECT COUNT(*)
     INTO actual_count
