@@ -40,6 +40,55 @@ DO $$
 DECLARE
     actual_count INTEGER;
     actual_active_count INTEGER;
+    actual_primary_count INTEGER;
+    actual_missing_count INTEGER;
+BEGIN
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM primary_address_coverage_summary;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION
+            'Expected 4 primary address coverage summary rows, found %',
+            actual_count;
+    END IF;
+
+    SELECT active_user_count, primary_address_count, users_without_primary_address_count
+    INTO actual_active_count, actual_primary_count, actual_missing_count
+    FROM primary_address_coverage_summary
+    WHERE country = 'Hungary';
+
+    IF actual_active_count <> 2
+        OR actual_primary_count <> 1
+        OR actual_missing_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected Hungary address coverage: active=%, primary=%, missing=%',
+            actual_active_count,
+            actual_primary_count,
+            actual_missing_count;
+    END IF;
+
+    SELECT active_user_count, primary_address_count, users_without_primary_address_count
+    INTO actual_active_count, actual_primary_count, actual_missing_count
+    FROM primary_address_coverage_summary
+    WHERE country = 'USA';
+
+    IF actual_active_count <> 2
+        OR actual_primary_count <> 2
+        OR actual_missing_count <> 0 THEN
+        RAISE EXCEPTION
+            'Unexpected USA address coverage: active=%, primary=%, missing=%',
+            actual_active_count,
+            actual_primary_count,
+            actual_missing_count;
+    END IF;
+END
+$$;
+
+DO $$
+DECLARE
+    actual_count INTEGER;
+    actual_active_count INTEGER;
     actual_order_count INTEGER;
     actual_without_orders_count INTEGER;
     actual_total NUMERIC(10, 2);

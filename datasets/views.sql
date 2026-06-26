@@ -273,6 +273,20 @@ WHERE u.status = 'ACTIVE'
   AND u.deleted_at IS NULL
 GROUP BY u.id, u.email, u.country;
 
+CREATE OR REPLACE VIEW primary_address_coverage_summary AS
+SELECT
+    u.country,
+    COUNT(*) AS user_count,
+    COUNT(*) FILTER (WHERE u.status = 'ACTIVE') AS active_user_count,
+    COUNT(a.id) AS primary_address_count,
+    COUNT(*) FILTER (WHERE a.id IS NULL) AS users_without_primary_address_count
+FROM users u
+LEFT JOIN addresses a
+    ON u.id = a.user_id
+   AND a.is_primary = TRUE
+WHERE u.deleted_at IS NULL
+GROUP BY u.country;
+
 CREATE OR REPLACE VIEW country_user_order_summary AS
 WITH user_order_metrics AS (
     SELECT

@@ -60,6 +60,16 @@ SELECT
 FROM country_user_order_summary
 ORDER BY country;
 
+-- Primary address coverage by country
+SELECT
+    country,
+    user_count,
+    active_user_count,
+    primary_address_count,
+    users_without_primary_address_count
+FROM primary_address_coverage_summary
+ORDER BY country;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users
