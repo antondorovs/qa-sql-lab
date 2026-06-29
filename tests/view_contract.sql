@@ -39,6 +39,73 @@ $$;
 DO $$
 DECLARE
     actual_count INTEGER;
+    actual_with_payment_count INTEGER;
+    actual_successful_payment_count INTEGER;
+    actual_without_payment_count INTEGER;
+    actual_total NUMERIC(10, 2);
+BEGIN
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM order_status_payment_summary;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION
+            'Expected 4 order status payment summary rows, found %',
+            actual_count;
+    END IF;
+
+    SELECT
+        order_count,
+        total_order_amount,
+        orders_with_payment_count,
+        orders_with_successful_payment_count,
+        orders_without_payment_count
+    INTO
+        actual_count,
+        actual_total,
+        actual_with_payment_count,
+        actual_successful_payment_count,
+        actual_without_payment_count
+    FROM order_status_payment_summary
+    WHERE order_status = 'PAID';
+
+    IF actual_count <> 4
+        OR actual_total <> 365.50
+        OR actual_with_payment_count <> 3
+        OR actual_successful_payment_count <> 3
+        OR actual_without_payment_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected PAID summary: orders=%, total=%, with_payment=%, successful=%, without_payment=%',
+            actual_count,
+            actual_total,
+            actual_with_payment_count,
+            actual_successful_payment_count,
+            actual_without_payment_count;
+    END IF;
+
+    SELECT
+        order_count,
+        total_order_amount,
+        orders_with_successful_payment_count
+    INTO actual_count, actual_total, actual_successful_payment_count
+    FROM order_status_payment_summary
+    WHERE order_status = 'NEW';
+
+    IF actual_count <> 2
+        OR actual_total <> 85.89
+        OR actual_successful_payment_count <> 0 THEN
+        RAISE EXCEPTION
+            'Unexpected NEW summary: orders=%, total=%, successful=%',
+            actual_count,
+            actual_total,
+            actual_successful_payment_count;
+    END IF;
+END
+$$;
+
+DO $$
+DECLARE
+    actual_count INTEGER;
     actual_active_count INTEGER;
     actual_primary_count INTEGER;
     actual_missing_count INTEGER;

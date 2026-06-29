@@ -311,6 +311,31 @@ SELECT
 FROM user_order_metrics
 GROUP BY country;
 
+CREATE OR REPLACE VIEW order_status_payment_summary AS
+WITH payment_flags AS (
+    SELECT
+        order_id,
+        TRUE AS has_payment,
+        BOOL_OR(status = 'SUCCESS') AS has_successful_payment
+    FROM payments
+    GROUP BY order_id
+)
+SELECT
+    o.status AS order_status,
+    COUNT(*) AS order_count,
+    COALESCE(SUM(o.amount), 0.00) AS total_order_amount,
+    COUNT(*) FILTER (WHERE p.has_payment) AS orders_with_payment_count,
+    COUNT(*) FILTER (
+        WHERE p.has_successful_payment
+    ) AS orders_with_successful_payment_count,
+    COUNT(*) FILTER (
+        WHERE p.has_payment IS NULL
+    ) AS orders_without_payment_count
+FROM orders o
+LEFT JOIN payment_flags p
+    ON o.id = p.order_id
+GROUP BY o.status;
+
 CREATE OR REPLACE VIEW order_payment_validation AS
 SELECT
     COALESCE(o.id, p.order_id) AS order_id,

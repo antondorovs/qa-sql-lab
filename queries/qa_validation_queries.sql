@@ -70,6 +70,17 @@ SELECT
 FROM primary_address_coverage_summary
 ORDER BY country;
 
+-- Payment coverage by order status
+SELECT
+    order_status,
+    order_count,
+    total_order_amount,
+    orders_with_payment_count,
+    orders_with_successful_payment_count,
+    orders_without_payment_count
+FROM order_status_payment_summary
+ORDER BY order_status;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users

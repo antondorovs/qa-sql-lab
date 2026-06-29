@@ -36,6 +36,7 @@ The lab provides:
 - `active_user_order_summary` for active-user order metrics.
 - `primary_address_coverage_summary` for country-level primary address coverage.
 - `country_user_order_summary` for country-level user and order coverage.
+- `order_status_payment_summary` for payment coverage by order status.
 - `order_payment_validation` for missing orders or users, payment status, and amount checks.
 - `payment_method_summary` for checkout coverage by payment method.
 - `data_quality_rule_summary` for severity-level data quality triage.

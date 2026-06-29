@@ -3,6 +3,7 @@
 DROP VIEW IF EXISTS data_quality_rule_summary;
 DROP VIEW IF EXISTS data_quality_rule_report;
 DROP VIEW IF EXISTS order_payment_validation;
+DROP VIEW IF EXISTS order_status_payment_summary;
 DROP VIEW IF EXISTS payment_method_summary;
 DROP VIEW IF EXISTS country_user_order_summary;
 DROP VIEW IF EXISTS primary_address_coverage_summary;

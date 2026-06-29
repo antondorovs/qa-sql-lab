@@ -110,6 +110,8 @@ The `country_user_order_summary` view compares user and order coverage by
 country.
 The `primary_address_coverage_summary` view shows primary address coverage by
 country.
+The `order_status_payment_summary` view compares payment coverage across order
+statuses without double-counting orders that have multiple payment attempts.
 
 ## Schema Contracts
 
