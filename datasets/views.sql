@@ -523,6 +523,25 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'duplicate_primary_address',
+        'Users should not have multiple primary addresses',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM (
+                SELECT user_id
+                FROM addresses
+                WHERE is_primary = TRUE
+                  AND user_id IS NOT NULL
+                GROUP BY user_id
+                HAVING COUNT(*) > 1
+            ) duplicate_primary_addresses
+        )
+
+    UNION ALL
+
+    SELECT
         'paid_order_without_successful_payment',
         'Paid orders should have a successful payment',
         'CRITICAL',

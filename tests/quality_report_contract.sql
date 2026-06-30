@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 18 THEN
-        RAISE EXCEPTION 'Expected 18 data quality rules, found %', actual_count;
+    IF actual_count <> 19 THEN
+        RAISE EXCEPTION 'Expected 19 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -75,6 +75,17 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'duplicate_primary_address';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no users with multiple primary addresses, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
@@ -93,6 +104,17 @@ BEGIN
     IF actual_count <> 7 THEN
         RAISE EXCEPTION
             'Expected 7 critical summary rules, found %',
+            actual_count;
+    END IF;
+
+    SELECT rule_count
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE severity = 'HIGH';
+
+    IF actual_count <> 9 THEN
+        RAISE EXCEPTION
+            'Expected 9 high severity summary rules, found %',
             actual_count;
     END IF;
 

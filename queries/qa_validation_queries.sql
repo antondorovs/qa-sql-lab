@@ -121,6 +121,16 @@ LEFT JOIN users u
     ON a.user_id = u.id
 WHERE u.id IS NULL;
 
+-- Users with multiple primary addresses
+SELECT
+    user_id,
+    COUNT(*) AS primary_address_count
+FROM addresses
+WHERE is_primary = TRUE
+  AND user_id IS NOT NULL
+GROUP BY user_id
+HAVING COUNT(*) > 1;
+
 -- Users created today
 SELECT id, email, created_at
 FROM users
