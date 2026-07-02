@@ -542,6 +542,21 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'address_country_mismatch',
+        'Address country should match user country',
+        'MEDIUM',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM addresses a
+            INNER JOIN users u
+                ON a.user_id = u.id
+            WHERE a.country <> u.country
+        )
+
+    UNION ALL
+
+    SELECT
         'paid_order_without_successful_payment',
         'Paid orders should have a successful payment',
         'CRITICAL',

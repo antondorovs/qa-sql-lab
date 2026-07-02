@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 19 THEN
-        RAISE EXCEPTION 'Expected 19 data quality rules, found %', actual_count;
+    IF actual_count <> 20 THEN
+        RAISE EXCEPTION 'Expected 20 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -86,6 +86,17 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'address_country_mismatch';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no address country mismatches, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
@@ -115,6 +126,17 @@ BEGIN
     IF actual_count <> 9 THEN
         RAISE EXCEPTION
             'Expected 9 high severity summary rules, found %',
+            actual_count;
+    END IF;
+
+    SELECT rule_count
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE severity = 'MEDIUM';
+
+    IF actual_count <> 3 THEN
+        RAISE EXCEPTION
+            'Expected 3 medium severity summary rules, found %',
             actual_count;
     END IF;
 

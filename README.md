@@ -102,7 +102,8 @@ See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 Temporal rules also detect impossible creation, payment, and deletion event
 sequences.
 Domain rules validate status and payment-method fields against approved values.
-Relationship rules detect users with multiple primary addresses.
+Relationship rules detect multiple primary addresses and address-country
+mismatches.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment

@@ -26,8 +26,8 @@ Domain value rules validate status and payment-method fields against approved
 sets. See `docs/domain_value_validation.md` for the allowed values and review
 workflow.
 
-Relationship rules also include a zero-tolerance check that each user has at
-most one primary address.
+Relationship rules also include zero-tolerance checks that each user has at
+most one primary address and that an address country matches its user country.
 
 ## Review the report
 

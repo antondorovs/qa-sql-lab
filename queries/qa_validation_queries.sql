@@ -131,6 +131,17 @@ WHERE is_primary = TRUE
 GROUP BY user_id
 HAVING COUNT(*) > 1;
 
+-- Addresses with a country that differs from the user country
+SELECT
+    a.id AS address_id,
+    a.user_id,
+    u.country AS user_country,
+    a.country AS address_country
+FROM addresses a
+INNER JOIN users u
+    ON a.user_id = u.id
+WHERE a.country <> u.country;
+
 -- Users created today
 SELECT id, email, created_at
 FROM users
