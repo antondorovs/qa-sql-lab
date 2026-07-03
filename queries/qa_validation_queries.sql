@@ -87,6 +87,12 @@ FROM users
 GROUP BY email
 HAVING COUNT(*) > 1;
 
+-- Duplicate order numbers
+SELECT order_number, COUNT(*) AS duplicate_count
+FROM orders
+GROUP BY order_number
+HAVING COUNT(*) > 1;
+
 -- Orders without existing users
 SELECT
     o.id,

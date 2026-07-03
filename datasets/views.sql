@@ -404,6 +404,23 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'duplicate_order_number',
+        'Order numbers should be unique',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM (
+                SELECT order_number
+                FROM orders
+                GROUP BY order_number
+                HAVING COUNT(*) > 1
+            ) duplicate_order_numbers
+        )
+
+    UNION ALL
+
+    SELECT
         'orphan_address',
         'Addresses should reference existing users',
         'HIGH',

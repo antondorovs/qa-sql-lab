@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 20 THEN
-        RAISE EXCEPTION 'Expected 20 data quality rules, found %', actual_count;
+    IF actual_count <> 21 THEN
+        RAISE EXCEPTION 'Expected 21 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -97,6 +97,17 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'duplicate_order_number';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no duplicate order numbers, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
@@ -123,9 +134,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 9 THEN
+    IF actual_count <> 10 THEN
         RAISE EXCEPTION
-            'Expected 9 high severity summary rules, found %',
+            'Expected 10 high severity summary rules, found %',
             actual_count;
     END IF;
 

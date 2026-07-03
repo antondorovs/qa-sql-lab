@@ -17,6 +17,8 @@ A clean result is therefore not always zero. The baseline records the expected
 fixture count so that tests detect accidental changes without removing useful
 QA scenarios.
 
+Uniqueness rules cover both user email addresses and order numbers.
+
 The report also includes zero-tolerance temporal rules. These checks ensure
 that creation, payment, and deletion timestamps follow a valid business-event
 sequence. See `docs/temporal_data_validation.md` for the investigation

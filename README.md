@@ -99,6 +99,7 @@ ORDER BY severity, rule_id;
 
 It distinguishes expected fixture counts from regressions and improvements.
 See `docs/data_quality_baselines.md` for the rule format and extension workflow.
+Uniqueness rules cover user emails and order numbers.
 Temporal rules also detect impossible creation, payment, and deletion event
 sequences.
 Domain rules validate status and payment-method fields against approved values.
