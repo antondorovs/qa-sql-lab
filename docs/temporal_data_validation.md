@@ -6,8 +6,9 @@ still describing an impossible sequence of events.
 
 ## Rules
 
-The data quality baseline includes four temporal rules:
+The data quality baseline includes five temporal rules:
 
+- A deleted user must include a deletion timestamp.
 - A user cannot be deleted before the user was created.
 - An address cannot be created before its user.
 - An order cannot be created before its user.
@@ -28,6 +29,7 @@ SELECT
     baseline_status
 FROM data_quality_rule_report
 WHERE rule_id IN (
+    'deleted_user_without_timestamp',
     'user_deleted_before_created',
     'address_created_before_user',
     'order_created_before_user',

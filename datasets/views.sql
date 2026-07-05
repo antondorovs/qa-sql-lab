@@ -591,6 +591,20 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'deleted_user_without_timestamp',
+        'Deleted users should include a deletion timestamp',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE status = 'DELETED'
+              AND deleted_at IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'user_deleted_before_created',
         'User deletion timestamps should not precede creation timestamps',
         'HIGH',
