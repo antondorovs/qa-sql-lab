@@ -204,6 +204,12 @@ FROM users
 WHERE status = 'DELETED'
   AND deleted_at IS NULL;
 
+-- Non-deleted users with a deletion timestamp
+SELECT id, email, status, deleted_at
+FROM users
+WHERE status <> 'DELETED'
+  AND deleted_at IS NOT NULL;
+
 -- Addresses created before their users
 SELECT
     a.id AS address_id,
