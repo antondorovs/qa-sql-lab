@@ -604,6 +604,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'cancelled_order_with_successful_payment',
+        'Cancelled orders should not have successful payments',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders o
+            INNER JOIN payments p
+                ON o.id = p.order_id
+            WHERE o.status = 'CANCELLED'
+              AND p.status = 'SUCCESS'
+        )
+
+    UNION ALL
+
+    SELECT
         'deleted_user_without_timestamp',
         'Deleted users should include a deletion timestamp',
         'HIGH',

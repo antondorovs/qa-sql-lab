@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 24 THEN
-        RAISE EXCEPTION 'Expected 24 data quality rules, found %', actual_count;
+    IF actual_count <> 25 THEN
+        RAISE EXCEPTION 'Expected 25 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -121,6 +121,17 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'cancelled_order_with_successful_payment';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no cancelled orders with successful payments, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
@@ -147,9 +158,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 12 THEN
+    IF actual_count <> 13 THEN
         RAISE EXCEPTION
-            'Expected 12 high severity summary rules, found %',
+            'Expected 13 high severity summary rules, found %',
             actual_count;
     END IF;
 
