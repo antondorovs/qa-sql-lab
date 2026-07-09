@@ -17,6 +17,9 @@ A clean result is therefore not always zero. The baseline records the expected
 fixture count so that tests detect accidental changes without removing useful
 QA scenarios.
 
+Completeness rules cover required QA review fields such as user ages and
+address postal codes.
+
 Uniqueness rules cover both user email addresses and order numbers.
 
 The report also includes zero-tolerance temporal rules. These checks ensure

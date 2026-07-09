@@ -492,6 +492,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'missing_address_postal_code',
+        'Address postal code should be available for validation',
+        'LOW',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM addresses
+            WHERE postal_code IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'payment_amount_mismatch',
         'Successful payment amount should match order amount',
         'CRITICAL',

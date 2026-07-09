@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 23 THEN
-        RAISE EXCEPTION 'Expected 23 data quality rules, found %', actual_count;
+    IF actual_count <> 24 THEN
+        RAISE EXCEPTION 'Expected 24 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -40,6 +40,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no successful payments without timestamps, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'missing_address_postal_code';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no addresses without postal codes, found %',
             actual_count;
     END IF;
 
@@ -150,6 +161,17 @@ BEGIN
     IF actual_count <> 3 THEN
         RAISE EXCEPTION
             'Expected 3 medium severity summary rules, found %',
+            actual_count;
+    END IF;
+
+    SELECT rule_count
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE severity = 'LOW';
+
+    IF actual_count <> 2 THEN
+        RAISE EXCEPTION
+            'Expected 2 low severity summary rules, found %',
             actual_count;
     END IF;
 

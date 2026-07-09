@@ -163,6 +163,16 @@ SELECT id, email, age
 FROM users
 WHERE age IS NULL;
 
+-- Addresses without postal codes
+SELECT
+    id,
+    user_id,
+    city,
+    country,
+    postal_code
+FROM addresses
+WHERE postal_code IS NULL;
+
 -- Successful payments without paid timestamp
 SELECT id, order_id, status, paid_at
 FROM payments
