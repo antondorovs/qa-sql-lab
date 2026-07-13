@@ -108,7 +108,7 @@ Domain rules validate status and payment-method fields against approved values.
 Relationship rules detect multiple primary addresses and address-country
 mismatches.
 Payment lifecycle rules flag cancelled orders that still have successful
-payments.
+payments and refunded payments without timestamps.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment

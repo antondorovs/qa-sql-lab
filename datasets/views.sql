@@ -535,6 +535,20 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'refunded_payment_without_timestamp',
+        'Refunded payments should include a payment timestamp',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE status = 'REFUNDED'
+              AND paid_at IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_without_primary_address',
         'Active users should have a primary address',
         'MEDIUM',

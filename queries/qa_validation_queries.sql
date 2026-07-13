@@ -186,6 +186,12 @@ FROM payments
 WHERE status = 'SUCCESS'
   AND paid_at IS NULL;
 
+-- Refunded payments without paid timestamp
+SELECT id, order_id, status, paid_at
+FROM payments
+WHERE status = 'REFUNDED'
+  AND paid_at IS NULL;
+
 -- Paid orders without successful payment
 SELECT
     o.id,

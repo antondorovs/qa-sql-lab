@@ -37,7 +37,8 @@ Relationship rules also include zero-tolerance checks that each user has at
 most one primary address and that an address country matches its user country.
 
 Payment lifecycle rules compare order status and payment status so cancelled
-orders do not appear with successful payments.
+orders do not appear with successful payments, and refunded payments retain
+their audit timestamp.
 
 ## Review the report
 
