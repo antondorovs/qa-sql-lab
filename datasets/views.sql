@@ -553,6 +553,21 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'active_user_under_minimum_age',
+        'Active users should be at least 18 years old',
+        'MEDIUM',
+        1::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE status = 'ACTIVE'
+              AND deleted_at IS NULL
+              AND age < 18
+        )
+
+    UNION ALL
+
+    SELECT
         'duplicate_primary_address',
         'Users should not have multiple primary addresses',
         'HIGH',

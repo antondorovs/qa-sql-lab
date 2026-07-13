@@ -163,6 +163,13 @@ SELECT id, email, age
 FROM users
 WHERE age IS NULL;
 
+-- Active users under the minimum account age
+SELECT id, email, status, age
+FROM users
+WHERE status = 'ACTIVE'
+  AND deleted_at IS NULL
+  AND age < 18;
+
 -- Addresses without postal codes
 SELECT
     id,
