@@ -549,6 +549,20 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'failed_payment_with_timestamp',
+        'Failed payments should not include a payment timestamp',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE status = 'FAILED'
+              AND paid_at IS NOT NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_without_primary_address',
         'Active users should have a primary address',
         'MEDIUM',

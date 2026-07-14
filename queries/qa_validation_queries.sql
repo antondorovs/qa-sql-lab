@@ -192,6 +192,12 @@ FROM payments
 WHERE status = 'REFUNDED'
   AND paid_at IS NULL;
 
+-- Failed payments with paid timestamp
+SELECT id, order_id, status, paid_at
+FROM payments
+WHERE status = 'FAILED'
+  AND paid_at IS NOT NULL;
+
 -- Paid orders without successful payment
 SELECT
     o.id,
