@@ -109,7 +109,8 @@ Relationship rules detect multiple primary addresses and address-country
 mismatches.
 Payment lifecycle rules flag cancelled orders that still have successful
 payments, refunded payments without timestamps, and failed payments with
-timestamps.
+timestamps. Pending payments are also expected to remain timestamp-free until
+settlement.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment

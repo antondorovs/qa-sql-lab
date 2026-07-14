@@ -39,7 +39,8 @@ most one primary address and that an address country matches its user country.
 Payment lifecycle rules compare order status and payment status so cancelled
 orders do not appear with successful payments, and refunded payments retain
 their audit timestamp. Failed payments remain timestamp-free until a later
-successful or refunded event exists.
+successful or refunded event exists, and pending payments stay timestamp-free
+until settlement.
 
 ## Review the report
 
