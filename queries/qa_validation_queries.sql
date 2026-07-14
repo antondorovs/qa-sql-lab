@@ -231,6 +231,20 @@ INNER JOIN payments p
 WHERE o.status = 'CANCELLED'
   AND p.status = 'SUCCESS';
 
+-- New orders with successful payments
+SELECT
+    o.id AS order_id,
+    o.order_number,
+    o.status AS order_status,
+    p.id AS payment_id,
+    p.status AS payment_status,
+    p.amount AS payment_amount
+FROM orders o
+INNER JOIN payments p
+    ON o.id = p.order_id
+WHERE o.status = 'NEW'
+  AND p.status = 'SUCCESS';
+
 -- Order and payment amount mismatch
 SELECT
     o.id AS order_id,

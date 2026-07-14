@@ -107,9 +107,9 @@ creation, payment, and deletion event sequences.
 Domain rules validate status and payment-method fields against approved values.
 Relationship rules detect multiple primary addresses and address-country
 mismatches.
-Payment lifecycle rules flag cancelled orders that still have successful
+Payment lifecycle rules flag new or cancelled orders that still have successful
 payments, refunded payments without timestamps, and failed payments with
-timestamps. Pending payments are also expected to remain timestamp-free until
+timestamps. Pending payments are expected to remain timestamp-free until
 settlement.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
