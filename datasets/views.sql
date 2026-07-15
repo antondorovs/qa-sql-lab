@@ -549,6 +549,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'refunded_payment_for_non_cancelled_order',
+        'Refunded payments should belong to cancelled orders',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            INNER JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'REFUNDED'
+              AND o.status <> 'CANCELLED'
+        )
+
+    UNION ALL
+
+    SELECT
         'failed_payment_with_timestamp',
         'Failed payments should not include a payment timestamp',
         'HIGH',

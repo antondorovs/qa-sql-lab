@@ -108,10 +108,10 @@ Domain rules validate status and payment-method fields against approved values.
 Relationship rules detect multiple primary addresses and address-country
 mismatches.
 Payment lifecycle rules flag shipped orders without successful payments,
-cancelled orders without refunds, new or cancelled orders that still have
-successful payments, refunded payments without timestamps, and failed payments
-with timestamps. Pending payments are expected to remain timestamp-free until
-settlement.
+cancelled orders without refunds, refunded payments on non-cancelled orders,
+new or cancelled orders that still have successful payments, refunded payments
+without timestamps, and failed payments with timestamps. Pending payments are
+expected to remain timestamp-free until settlement.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment

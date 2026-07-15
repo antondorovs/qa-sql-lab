@@ -192,6 +192,19 @@ FROM payments
 WHERE status = 'REFUNDED'
   AND paid_at IS NULL;
 
+-- Refunded payments for non-cancelled orders
+SELECT
+    p.id AS payment_id,
+    p.order_id,
+    p.status AS payment_status,
+    o.order_number,
+    o.status AS order_status
+FROM payments p
+INNER JOIN orders o
+    ON p.order_id = o.id
+WHERE p.status = 'REFUNDED'
+  AND o.status <> 'CANCELLED';
+
 -- Failed payments with paid timestamp
 SELECT id, order_id, status, paid_at
 FROM payments
