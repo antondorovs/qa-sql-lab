@@ -36,11 +36,11 @@ workflow.
 Relationship rules also include zero-tolerance checks that each user has at
 most one primary address and that an address country matches its user country.
 
-Payment lifecycle rules compare order status and payment status so new or
-cancelled orders do not appear with successful payments, and refunded payments
-retain their audit timestamp. Failed payments remain timestamp-free until a
-later successful or refunded event exists, and pending payments stay
-timestamp-free until settlement.
+Payment lifecycle rules compare order status and payment status so shipped
+orders have successful payments, new or cancelled orders do not appear with
+successful payments, and refunded payments retain their audit timestamp. Failed
+payments remain timestamp-free until a later successful or refunded event
+exists, and pending payments stay timestamp-free until settlement.
 
 ## Review the report
 

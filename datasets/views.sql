@@ -661,6 +661,23 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'shipped_order_without_successful_payment',
+        'Shipped orders should have a successful payment',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders o
+            LEFT JOIN payments p
+                ON o.id = p.order_id
+               AND p.status = 'SUCCESS'
+            WHERE o.status = 'SHIPPED'
+              AND p.id IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'cancelled_order_with_successful_payment',
         'Cancelled orders should not have successful payments',
         'HIGH',
