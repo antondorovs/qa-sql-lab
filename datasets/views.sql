@@ -694,6 +694,23 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'cancelled_order_without_refunded_payment',
+        'Cancelled orders should have a refunded payment',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders o
+            LEFT JOIN payments p
+                ON o.id = p.order_id
+               AND p.status = 'REFUNDED'
+            WHERE o.status = 'CANCELLED'
+              AND p.id IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'new_order_with_successful_payment',
         'New orders should not already have successful payments',
         'HIGH',

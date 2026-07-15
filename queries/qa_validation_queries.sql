@@ -244,6 +244,21 @@ INNER JOIN payments p
 WHERE o.status = 'CANCELLED'
   AND p.status = 'SUCCESS';
 
+-- Cancelled orders without refunded payments
+SELECT
+    o.id AS order_id,
+    o.order_number,
+    o.status AS order_status,
+    p.id AS payment_id,
+    p.status AS payment_status,
+    p.amount AS payment_amount
+FROM orders o
+LEFT JOIN payments p
+    ON o.id = p.order_id
+   AND p.status = 'REFUNDED'
+WHERE o.status = 'CANCELLED'
+  AND p.id IS NULL;
+
 -- New orders with successful payments
 SELECT
     o.id AS order_id,
