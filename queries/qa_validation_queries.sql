@@ -217,6 +217,19 @@ FROM payments
 WHERE status = 'PENDING'
   AND paid_at IS NOT NULL;
 
+-- Pending payments for non-new orders
+SELECT
+    p.id AS payment_id,
+    p.order_id,
+    p.status AS payment_status,
+    o.order_number,
+    o.status AS order_status
+FROM payments p
+INNER JOIN orders o
+    ON p.order_id = o.id
+WHERE p.status = 'PENDING'
+  AND o.status <> 'NEW';
+
 -- Paid orders without successful payment
 SELECT
     o.id,

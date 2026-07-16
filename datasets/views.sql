@@ -593,6 +593,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'pending_payment_for_non_new_order',
+        'Pending payments should belong to new orders',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            INNER JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'PENDING'
+              AND o.status <> 'NEW'
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_without_primary_address',
         'Active users should have a primary address',
         'MEDIUM',
