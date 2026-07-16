@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 35 THEN
-        RAISE EXCEPTION 'Expected 35 data quality rules, found %', actual_count;
+    IF actual_count <> 36 THEN
+        RAISE EXCEPTION 'Expected 36 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -40,6 +40,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no successful payments without timestamps, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'successful_payment_for_non_payable_order';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no successful payments for non-payable orders, found %',
             actual_count;
     END IF;
 
@@ -268,9 +279,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 21 THEN
+    IF actual_count <> 22 THEN
         RAISE EXCEPTION
-            'Expected 21 high severity summary rules, found %',
+            'Expected 22 high severity summary rules, found %',
             actual_count;
     END IF;
 

@@ -38,11 +38,12 @@ most one primary address and that an address country matches its user country.
 
 Payment lifecycle rules compare order status and payment status so shipped
 orders have successful payments, cancelled orders retain a refunded payment,
-refunded payments belong to cancelled orders, new or cancelled orders do not
-appear with successful payments, and refunded payments retain their audit
-timestamp. Failed payments stay tied to new orders and remain timestamp-free
-until a later successful or refunded event exists, and pending payments stay
-tied to new orders and remain timestamp-free until settlement.
+refunded payments belong to cancelled orders, successful payments stay tied to
+paid or shipped orders, new or cancelled orders do not appear with successful
+payments, and refunded payments retain their audit timestamp. Failed payments
+stay tied to new orders and remain timestamp-free until a later successful or
+refunded event exists, and pending payments stay tied to new orders and remain
+timestamp-free until settlement.
 
 ## Review the report
 

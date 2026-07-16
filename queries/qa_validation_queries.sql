@@ -186,6 +186,19 @@ FROM payments
 WHERE status = 'SUCCESS'
   AND paid_at IS NULL;
 
+-- Successful payments for non-payable orders
+SELECT
+    p.id AS payment_id,
+    p.order_id,
+    p.status AS payment_status,
+    o.order_number,
+    o.status AS order_status
+FROM payments p
+INNER JOIN orders o
+    ON p.order_id = o.id
+WHERE p.status = 'SUCCESS'
+  AND o.status NOT IN ('PAID', 'SHIPPED');
+
 -- Refunded payments without paid timestamp
 SELECT id, order_id, status, paid_at
 FROM payments

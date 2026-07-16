@@ -535,6 +535,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'successful_payment_for_non_payable_order',
+        'Successful payments should belong to paid or shipped orders',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            INNER JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'SUCCESS'
+              AND o.status NOT IN ('PAID', 'SHIPPED')
+        )
+
+    UNION ALL
+
+    SELECT
         'refunded_payment_without_timestamp',
         'Refunded payments should include a payment timestamp',
         'HIGH',
