@@ -579,6 +579,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'failed_payment_for_non_new_order',
+        'Failed payments should belong to new orders',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            INNER JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'FAILED'
+              AND o.status <> 'NEW'
+        )
+
+    UNION ALL
+
+    SELECT
         'pending_payment_with_timestamp',
         'Pending payments should not include a payment timestamp',
         'HIGH',
