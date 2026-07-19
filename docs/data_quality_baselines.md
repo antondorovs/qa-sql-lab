@@ -33,6 +33,9 @@ Domain value rules validate status and payment-method fields against approved
 sets. See `docs/domain_value_validation.md` for the allowed values and review
 workflow.
 
+Amount rules flag non-positive order or payment totals before they reach
+checkout and settlement reports.
+
 Relationship rules also include zero-tolerance checks that each user has at
 most one primary address and that an address country matches its user country.
 

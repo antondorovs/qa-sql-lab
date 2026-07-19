@@ -158,6 +158,11 @@ SELECT id, order_number, amount
 FROM orders
 WHERE amount < 0;
 
+-- Payments with non-positive amount
+SELECT id, order_id, status, amount
+FROM payments
+WHERE amount <= 0;
+
 -- Users without age
 SELECT id, email, age
 FROM users

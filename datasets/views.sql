@@ -479,6 +479,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'non_positive_payment_amount',
+        'Payment amounts should be greater than zero',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE amount <= 0
+        )
+
+    UNION ALL
+
+    SELECT
         'missing_user_age',
         'User age should be available for validation',
         'LOW',

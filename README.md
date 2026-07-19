@@ -105,6 +105,7 @@ Uniqueness rules cover user emails and order numbers.
 Temporal rules detect deletion status/timestamp mismatches and impossible
 creation, payment, and deletion event sequences.
 Domain rules validate status and payment-method fields against approved values.
+Amount rules flag non-positive order or payment totals.
 Relationship rules detect multiple primary addresses and address-country
 mismatches.
 Payment lifecycle rules flag shipped orders without successful payments,
