@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 37 THEN
-        RAISE EXCEPTION 'Expected 37 data quality rules, found %', actual_count;
+    IF actual_count <> 38 THEN
+        RAISE EXCEPTION 'Expected 38 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -139,6 +139,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no addresses without postal codes, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'non_positive_user_age';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no users with non-positive ages, found %',
             actual_count;
     END IF;
 
@@ -301,9 +312,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'MEDIUM';
 
-    IF actual_count <> 4 THEN
+    IF actual_count <> 5 THEN
         RAISE EXCEPTION
-            'Expected 4 medium severity summary rules, found %',
+            'Expected 5 medium severity summary rules, found %',
             actual_count;
     END IF;
 

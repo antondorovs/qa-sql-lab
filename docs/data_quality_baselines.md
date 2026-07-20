@@ -20,7 +20,8 @@ QA scenarios.
 Completeness rules cover required QA review fields such as user ages and
 address postal codes.
 
-Eligibility rules flag active accounts that do not meet the minimum review age.
+Eligibility rules flag non-positive ages and active accounts that do not meet
+the minimum review age.
 
 Uniqueness rules cover both user email addresses and order numbers.
 

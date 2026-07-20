@@ -168,6 +168,11 @@ SELECT id, email, age
 FROM users
 WHERE age IS NULL;
 
+-- Users with non-positive age
+SELECT id, email, age
+FROM users
+WHERE age <= 0;
+
 -- Active users under the minimum account age
 SELECT id, email, status, age
 FROM users

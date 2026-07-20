@@ -505,6 +505,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'non_positive_user_age',
+        'User age should be greater than zero when available',
+        'MEDIUM',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE age <= 0
+        )
+
+    UNION ALL
+
+    SELECT
         'missing_address_postal_code',
         'Address postal code should be available for validation',
         'LOW',
