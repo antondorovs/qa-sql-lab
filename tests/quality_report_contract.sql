@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 39 THEN
-        RAISE EXCEPTION 'Expected 39 data quality rules, found %', actual_count;
+    IF actual_count <> 40 THEN
+        RAISE EXCEPTION 'Expected 40 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -40,6 +40,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no payments with non-positive amounts, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'invalid_user_email_format';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no users with invalid email format, found %',
             actual_count;
     END IF;
 
@@ -302,9 +313,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 23 THEN
+    IF actual_count <> 24 THEN
         RAISE EXCEPTION
-            'Expected 23 high severity summary rules, found %',
+            'Expected 24 high severity summary rules, found %',
             actual_count;
     END IF;
 

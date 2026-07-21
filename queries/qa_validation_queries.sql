@@ -87,6 +87,11 @@ FROM users
 GROUP BY email
 HAVING COUNT(*) > 1;
 
+-- Users with invalid email format
+SELECT id, email
+FROM users
+WHERE email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$';
+
 -- Duplicate order numbers
 SELECT order_number, COUNT(*) AS duplicate_count
 FROM orders

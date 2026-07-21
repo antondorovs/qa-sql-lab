@@ -103,6 +103,7 @@ Completeness rules cover user ages and address postal codes.
 Eligibility rules flag non-positive ages and active users below the minimum
 account age.
 Uniqueness rules cover user emails and order numbers.
+Format rules validate user email shape.
 Temporal rules detect deletion status/timestamp mismatches, deleted-user order
 links, and impossible creation, payment, and deletion event sequences.
 Domain rules validate status and payment-method fields against approved values.

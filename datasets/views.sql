@@ -404,6 +404,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'invalid_user_email_format',
+        'User email addresses should use a valid format',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$'
+        )
+
+    UNION ALL
+
+    SELECT
         'duplicate_order_number',
         'Order numbers should be unique',
         'HIGH',

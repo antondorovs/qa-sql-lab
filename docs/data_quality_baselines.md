@@ -25,6 +25,9 @@ the minimum review age.
 
 Uniqueness rules cover both user email addresses and order numbers.
 
+Format rules validate user email shape before downstream notification or
+identity checks consume the record.
+
 The report also includes zero-tolerance temporal rules. These checks ensure
 that deleted users do not retain related orders and that creation, payment, and
 deletion timestamps follow a valid business-event sequence. See
