@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 42 THEN
-        RAISE EXCEPTION 'Expected 42 data quality rules, found %', actual_count;
+    IF actual_count <> 43 THEN
+        RAISE EXCEPTION 'Expected 43 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -73,6 +73,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no addresses with blank cities, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'blank_user_country';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no users with blank countries, found %',
             actual_count;
     END IF;
 
@@ -335,9 +346,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 26 THEN
+    IF actual_count <> 27 THEN
         RAISE EXCEPTION
-            'Expected 26 high severity summary rules, found %',
+            'Expected 27 high severity summary rules, found %',
             actual_count;
     END IF;
 

@@ -431,6 +431,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_user_country',
+        'User country values should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE BTRIM(country) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'duplicate_order_number',
         'Order numbers should be unique',
         'HIGH',

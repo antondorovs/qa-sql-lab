@@ -98,6 +98,11 @@ FROM users
 WHERE BTRIM(first_name) = ''
    OR BTRIM(last_name) = '';
 
+-- Users with blank country
+SELECT id, email, country
+FROM users
+WHERE BTRIM(country) = '';
+
 -- Duplicate order numbers
 SELECT order_number, COUNT(*) AS duplicate_count
 FROM orders
