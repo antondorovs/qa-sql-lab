@@ -845,6 +845,21 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'deleted_user_with_orders',
+        'Deleted users should not keep related orders',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users u
+            INNER JOIN orders o
+                ON u.id = o.user_id
+            WHERE u.status = 'DELETED'
+        )
+
+    UNION ALL
+
+    SELECT
         'user_deleted_before_created',
         'User deletion timestamps should not precede creation timestamps',
         'HIGH',

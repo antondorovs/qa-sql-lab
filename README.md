@@ -103,8 +103,8 @@ Completeness rules cover user ages and address postal codes.
 Eligibility rules flag non-positive ages and active users below the minimum
 account age.
 Uniqueness rules cover user emails and order numbers.
-Temporal rules detect deletion status/timestamp mismatches and impossible
-creation, payment, and deletion event sequences.
+Temporal rules detect deletion status/timestamp mismatches, deleted-user order
+links, and impossible creation, payment, and deletion event sequences.
 Domain rules validate status and payment-method fields against approved values.
 Amount rules flag non-positive order or payment totals.
 Relationship rules detect multiple primary addresses and address-country

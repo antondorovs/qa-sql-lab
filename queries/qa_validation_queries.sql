@@ -363,6 +363,18 @@ FROM users
 WHERE status <> 'DELETED'
   AND deleted_at IS NOT NULL;
 
+-- Deleted users with related orders
+SELECT
+    u.id AS user_id,
+    u.email,
+    o.id AS order_id,
+    o.order_number,
+    o.status AS order_status
+FROM users u
+INNER JOIN orders o
+    ON u.id = o.user_id
+WHERE u.status = 'DELETED';
+
 -- Addresses created before their users
 SELECT
     a.id AS address_id,
