@@ -17,8 +17,8 @@ A clean result is therefore not always zero. The baseline records the expected
 fixture count so that tests detect accidental changes without removing useful
 QA scenarios.
 
-Completeness rules cover required QA review fields such as user ages and
-address postal codes.
+Completeness rules cover required QA review fields such as user ages,
+non-blank user names, and address postal codes.
 
 Eligibility rules flag non-positive ages and active accounts that do not meet
 the minimum review age.

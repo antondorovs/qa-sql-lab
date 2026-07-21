@@ -417,6 +417,20 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_user_name',
+        'User first and last names should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE BTRIM(first_name) = ''
+               OR BTRIM(last_name) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'duplicate_order_number',
         'Order numbers should be unique',
         'HIGH',

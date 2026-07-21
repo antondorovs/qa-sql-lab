@@ -92,6 +92,12 @@ SELECT id, email
 FROM users
 WHERE email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$';
 
+-- Users with blank names
+SELECT id, first_name, last_name, email
+FROM users
+WHERE BTRIM(first_name) = ''
+   OR BTRIM(last_name) = '';
+
 -- Duplicate order numbers
 SELECT order_number, COUNT(*) AS duplicate_count
 FROM orders
