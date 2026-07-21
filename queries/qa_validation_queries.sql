@@ -138,6 +138,11 @@ LEFT JOIN users u
     ON a.user_id = u.id
 WHERE u.id IS NULL;
 
+-- Addresses with blank city
+SELECT id, user_id, city, country
+FROM addresses
+WHERE BTRIM(city) = '';
+
 -- Users with multiple primary addresses
 SELECT
     user_id,

@@ -18,7 +18,7 @@ fixture count so that tests detect accidental changes without removing useful
 QA scenarios.
 
 Completeness rules cover required QA review fields such as user ages,
-non-blank user names, and address postal codes.
+non-blank user names, address cities, and address postal codes.
 
 Eligibility rules flag non-positive ages and active accounts that do not meet
 the minimum review age.
