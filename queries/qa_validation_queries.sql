@@ -189,6 +189,11 @@ SELECT id, order_id, status, amount
 FROM payments
 WHERE amount <= 0;
 
+-- Payments with blank method
+SELECT id, order_id, payment_method, status
+FROM payments
+WHERE BTRIM(payment_method) = '';
+
 -- Users without age
 SELECT id, email, age
 FROM users

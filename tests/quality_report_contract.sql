@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 44 THEN
-        RAISE EXCEPTION 'Expected 44 data quality rules, found %', actual_count;
+    IF actual_count <> 45 THEN
+        RAISE EXCEPTION 'Expected 45 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -95,6 +95,17 @@ BEGIN
     IF actual_count <> 0 THEN
         RAISE EXCEPTION
             'Expected no orders with blank order numbers, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'blank_payment_method';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no payments with blank methods, found %',
             actual_count;
     END IF;
 
@@ -357,9 +368,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 28 THEN
+    IF actual_count <> 29 THEN
         RAISE EXCEPTION
-            'Expected 28 high severity summary rules, found %',
+            'Expected 29 high severity summary rules, found %',
             actual_count;
     END IF;
 

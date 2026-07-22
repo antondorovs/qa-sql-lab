@@ -1023,6 +1023,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_payment_method',
+        'Payment methods should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE BTRIM(payment_method) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'invalid_payment_method',
         'Payment method should use an approved domain value',
         'MEDIUM',

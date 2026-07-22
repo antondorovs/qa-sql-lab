@@ -100,7 +100,7 @@ ORDER BY severity, rule_id;
 It distinguishes expected fixture counts from regressions and improvements.
 See `docs/data_quality_baselines.md` for the rule format and extension workflow.
 Completeness rules cover user ages, non-blank user names, user countries,
-order numbers, address cities, and address postal codes.
+order numbers, payment methods, address cities, and address postal codes.
 Eligibility rules flag non-positive ages and active users below the minimum
 account age.
 Uniqueness rules cover user emails and order numbers.
