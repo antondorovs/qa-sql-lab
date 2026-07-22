@@ -1023,6 +1023,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_payment_status',
+        'Payment statuses should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments
+            WHERE BTRIM(status) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'blank_payment_method',
         'Payment methods should not be blank',
         'HIGH',
