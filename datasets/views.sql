@@ -1010,6 +1010,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_order_status',
+        'Order statuses should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders
+            WHERE BTRIM(status) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'invalid_payment_status',
         'Payment status should use an approved domain value',
         'HIGH',

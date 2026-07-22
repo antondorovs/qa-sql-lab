@@ -114,6 +114,11 @@ SELECT id, user_id, order_number, status
 FROM orders
 WHERE BTRIM(order_number) = '';
 
+-- Orders with blank status
+SELECT id, user_id, order_number, status
+FROM orders
+WHERE BTRIM(status) = '';
+
 -- Orders without existing users
 SELECT
     o.id,
