@@ -461,6 +461,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_order_number',
+        'Order numbers should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM orders
+            WHERE BTRIM(order_number) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'orphan_address',
         'Addresses should reference existing users',
         'HIGH',

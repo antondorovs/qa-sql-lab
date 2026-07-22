@@ -109,6 +109,11 @@ FROM orders
 GROUP BY order_number
 HAVING COUNT(*) > 1;
 
+-- Orders with blank order numbers
+SELECT id, user_id, order_number, status
+FROM orders
+WHERE BTRIM(order_number) = '';
+
 -- Orders without existing users
 SELECT
     o.id,
