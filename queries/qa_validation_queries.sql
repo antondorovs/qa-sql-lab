@@ -163,6 +163,11 @@ SELECT id, user_id, city, country
 FROM addresses
 WHERE BTRIM(city) = '';
 
+-- Addresses with blank country
+SELECT id, user_id, city, country
+FROM addresses
+WHERE BTRIM(country) = '';
+
 -- Users with multiple primary addresses
 SELECT
     user_id,

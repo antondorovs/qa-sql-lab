@@ -19,8 +19,8 @@ QA scenarios.
 
 Completeness rules cover required QA review fields such as user ages,
 non-blank user names, user countries, user statuses, order numbers, order
-statuses, payment methods, payment statuses, address cities, and address
-postal codes.
+statuses, payment methods, payment statuses, address cities, address
+countries, and address postal codes.
 
 Eligibility rules flag non-positive ages and active accounts that do not meet
 the minimum review age.

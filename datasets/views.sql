@@ -502,6 +502,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_address_country',
+        'Address country values should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM addresses
+            WHERE BTRIM(country) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'orphan_order',
         'Orders should reference existing users',
         'CRITICAL',
