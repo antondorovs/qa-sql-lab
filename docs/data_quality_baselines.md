@@ -43,7 +43,8 @@ Amount rules flag non-positive order or payment totals before they reach
 checkout and settlement reports.
 
 Relationship rules also include zero-tolerance checks that each user has at
-most one primary address and that an address country matches its user country.
+most one primary address, each order has at most one payment record, and that
+an address country matches its user country.
 
 Payment lifecycle rules compare order status and payment status so shipped
 orders have successful payments, cancelled orders retain a refunded payment,

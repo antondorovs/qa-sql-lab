@@ -798,6 +798,24 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'multiple_payments_for_order',
+        'Orders should not have multiple payment records',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM (
+                SELECT order_id
+                FROM payments
+                WHERE order_id IS NOT NULL
+                GROUP BY order_id
+                HAVING COUNT(*) > 1
+            ) orders_with_multiple_payments
+        )
+
+    UNION ALL
+
+    SELECT
         'address_country_mismatch',
         'Address country should match user country',
         'MEDIUM',

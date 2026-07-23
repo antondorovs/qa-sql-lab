@@ -110,8 +110,8 @@ Temporal rules detect deletion status/timestamp mismatches, deleted-user order
 links, and impossible creation, payment, and deletion event sequences.
 Domain rules validate status and payment-method fields against approved values.
 Amount rules flag non-positive order or payment totals.
-Relationship rules detect multiple primary addresses and address-country
-mismatches.
+Relationship rules detect multiple primary addresses, orders with multiple
+payment records, and address-country mismatches.
 Payment lifecycle rules flag shipped orders without successful payments,
 cancelled orders without refunds, refunded payments on non-cancelled orders,
 successful payments on non-payable orders, new or cancelled orders that still

@@ -168,6 +168,15 @@ SELECT id, user_id, city, country
 FROM addresses
 WHERE BTRIM(country) = '';
 
+-- Orders with multiple payment records
+SELECT
+    order_id,
+    COUNT(*) AS payment_count
+FROM payments
+WHERE order_id IS NOT NULL
+GROUP BY order_id
+HAVING COUNT(*) > 1;
+
 -- Users with multiple primary addresses
 SELECT
     user_id,

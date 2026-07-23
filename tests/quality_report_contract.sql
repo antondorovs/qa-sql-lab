@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 49 THEN
-        RAISE EXCEPTION 'Expected 49 data quality rules, found %', actual_count;
+    IF actual_count <> 50 THEN
+        RAISE EXCEPTION 'Expected 50 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -312,6 +312,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'multiple_payments_for_order';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no orders with multiple payments, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'address_country_mismatch';
 
     IF actual_count <> 0 THEN
@@ -412,9 +423,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 33 THEN
+    IF actual_count <> 34 THEN
         RAISE EXCEPTION
-            'Expected 33 high severity summary rules, found %',
+            'Expected 34 high severity summary rules, found %',
             actual_count;
     END IF;
 
