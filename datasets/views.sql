@@ -997,6 +997,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'blank_user_status',
+        'User statuses should not be blank',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users
+            WHERE BTRIM(status) = ''
+        )
+
+    UNION ALL
+
+    SELECT
         'invalid_order_status',
         'Order status should use an approved domain value',
         'HIGH',

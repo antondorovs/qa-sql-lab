@@ -103,6 +103,11 @@ SELECT id, email, country
 FROM users
 WHERE BTRIM(country) = '';
 
+-- Users with blank status
+SELECT id, email, status
+FROM users
+WHERE BTRIM(status) = '';
+
 -- Duplicate order numbers
 SELECT order_number, COUNT(*) AS duplicate_count
 FROM orders
