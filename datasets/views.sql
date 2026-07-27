@@ -764,6 +764,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'active_user_without_orders',
+        'Active users should have at least one order record',
+        'MEDIUM',
+        1::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM active_user_order_summary
+            WHERE order_count = 0
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_under_minimum_age',
         'Active users should be at least 18 years old',
         'MEDIUM',

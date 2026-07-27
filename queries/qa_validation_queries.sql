@@ -81,6 +81,16 @@ SELECT
 FROM order_status_payment_summary
 ORDER BY order_status;
 
+-- Active users without orders
+SELECT
+    user_id,
+    email,
+    country,
+    order_count,
+    latest_order_at
+FROM active_user_order_summary
+WHERE order_count = 0;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users
