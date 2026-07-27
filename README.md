@@ -107,7 +107,8 @@ account age.
 Uniqueness rules cover user emails and order numbers.
 Format rules validate user email shape.
 Temporal rules detect deletion status/timestamp mismatches, deleted-user order
-links, and impossible creation, payment, and deletion event sequences.
+or address links, and impossible creation, payment, and deletion event
+sequences.
 Domain rules validate status and payment-method fields against approved values.
 Amount rules flag non-positive order or payment totals.
 Relationship rules detect multiple primary addresses, orders with multiple

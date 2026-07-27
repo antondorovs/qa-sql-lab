@@ -957,6 +957,21 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'deleted_user_with_addresses',
+        'Deleted users should not keep related addresses',
+        'HIGH',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM users u
+            INNER JOIN addresses a
+                ON u.id = a.user_id
+            WHERE u.status = 'DELETED'
+        )
+
+    UNION ALL
+
+    SELECT
         'user_deleted_before_created',
         'User deletion timestamps should not precede creation timestamps',
         'HIGH',

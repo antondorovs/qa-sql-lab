@@ -435,6 +435,18 @@ INNER JOIN orders o
     ON u.id = o.user_id
 WHERE u.status = 'DELETED';
 
+-- Deleted users with related addresses
+SELECT
+    u.id AS user_id,
+    u.email,
+    a.id AS address_id,
+    a.city,
+    a.country
+FROM users u
+INNER JOIN addresses a
+    ON u.id = a.user_id
+WHERE u.status = 'DELETED';
+
 -- Addresses created before their users
 SELECT
     a.id AS address_id,

@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 50 THEN
-        RAISE EXCEPTION 'Expected 50 data quality rules, found %', actual_count;
+    IF actual_count <> 51 THEN
+        RAISE EXCEPTION 'Expected 51 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -270,6 +270,7 @@ BEGIN
         'deleted_user_without_timestamp',
         'non_deleted_user_with_timestamp',
         'deleted_user_with_orders',
+        'deleted_user_with_addresses',
         'user_deleted_before_created',
         'address_created_before_user',
         'order_created_before_user',
@@ -423,9 +424,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'HIGH';
 
-    IF actual_count <> 34 THEN
+    IF actual_count <> 35 THEN
         RAISE EXCEPTION
-            'Expected 34 high severity summary rules, found %',
+            'Expected 35 high severity summary rules, found %',
             actual_count;
     END IF;
 
