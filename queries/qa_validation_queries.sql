@@ -91,6 +91,15 @@ SELECT
 FROM active_user_order_summary
 WHERE order_count = 0;
 
+-- Countries without order coverage
+SELECT
+    country,
+    user_count,
+    active_user_count,
+    order_count
+FROM country_user_order_summary
+WHERE order_count = 0;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users

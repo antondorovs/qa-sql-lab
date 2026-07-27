@@ -777,6 +777,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'country_without_orders',
+        'Countries with non-deleted users should have order coverage',
+        'MEDIUM',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM country_user_order_summary
+            WHERE order_count = 0
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_under_minimum_age',
         'Active users should be at least 18 years old',
         'MEDIUM',

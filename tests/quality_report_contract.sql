@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 52 THEN
-        RAISE EXCEPTION 'Expected 52 data quality rules, found %', actual_count;
+    IF actual_count <> 53 THEN
+        RAISE EXCEPTION 'Expected 53 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -357,6 +357,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'country_without_orders';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no countries without order coverage, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'duplicate_order_number';
 
     IF actual_count <> 0 THEN
@@ -446,9 +457,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'MEDIUM';
 
-    IF actual_count <> 6 THEN
+    IF actual_count <> 7 THEN
         RAISE EXCEPTION
-            'Expected 6 medium severity summary rules, found %',
+            'Expected 7 medium severity summary rules, found %',
             actual_count;
     END IF;
 

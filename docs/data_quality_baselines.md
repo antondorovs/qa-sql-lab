@@ -25,7 +25,8 @@ countries, and address postal codes.
 Eligibility rules flag non-positive ages and active accounts that do not meet
 the minimum review age.
 
-Coverage rules flag active users that still have no order history.
+Coverage rules flag active users that still have no order history and
+countries with non-deleted users but no order coverage.
 
 Uniqueness rules cover both user email addresses and order numbers.
 
