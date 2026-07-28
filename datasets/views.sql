@@ -790,6 +790,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'country_without_primary_addresses',
+        'Countries with non-deleted users should have primary address coverage',
+        'MEDIUM',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM primary_address_coverage_summary
+            WHERE primary_address_count = 0
+        )
+
+    UNION ALL
+
+    SELECT
         'active_country_primary_address_gap',
         'Countries with active users should have complete primary address coverage',
         'MEDIUM',

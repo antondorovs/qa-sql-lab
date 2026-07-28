@@ -100,6 +100,15 @@ SELECT
 FROM country_user_order_summary
 WHERE order_count = 0;
 
+-- Countries without primary address coverage
+SELECT
+    country,
+    user_count,
+    active_user_count,
+    primary_address_count
+FROM primary_address_coverage_summary
+WHERE primary_address_count = 0;
+
 -- Countries with incomplete active-user primary address coverage
 SELECT
     country,

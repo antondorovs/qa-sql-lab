@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 54 THEN
-        RAISE EXCEPTION 'Expected 54 data quality rules, found %', actual_count;
+    IF actual_count <> 55 THEN
+        RAISE EXCEPTION 'Expected 55 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -368,6 +368,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'country_without_primary_addresses';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no countries without primary address coverage, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'active_country_primary_address_gap';
 
     IF actual_count <> 2 THEN
@@ -468,9 +479,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'MEDIUM';
 
-    IF actual_count <> 8 THEN
+    IF actual_count <> 9 THEN
         RAISE EXCEPTION
-            'Expected 8 medium severity summary rules, found %',
+            'Expected 9 medium severity summary rules, found %',
             actual_count;
     END IF;
 
