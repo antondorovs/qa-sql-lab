@@ -100,6 +100,16 @@ SELECT
 FROM country_user_order_summary
 WHERE order_count = 0;
 
+-- Countries with partial user order coverage
+SELECT
+    country,
+    user_count,
+    active_user_count,
+    order_count,
+    users_without_orders_count
+FROM country_user_order_summary
+WHERE users_without_orders_count > 0;
+
 -- Countries without primary address coverage
 SELECT
     country,

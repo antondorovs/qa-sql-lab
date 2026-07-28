@@ -790,6 +790,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'country_with_user_order_gap',
+        'Countries should not have non-deleted users without order history',
+        'MEDIUM',
+        1::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM country_user_order_summary
+            WHERE users_without_orders_count > 0
+        )
+
+    UNION ALL
+
+    SELECT
         'country_without_primary_addresses',
         'Countries with non-deleted users should have primary address coverage',
         'MEDIUM',
