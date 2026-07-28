@@ -790,6 +790,19 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'active_country_primary_address_gap',
+        'Countries with active users should have complete primary address coverage',
+        'MEDIUM',
+        2::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM primary_address_coverage_summary
+            WHERE active_user_count > primary_address_count
+        )
+
+    UNION ALL
+
+    SELECT
         'active_user_under_minimum_age',
         'Active users should be at least 18 years old',
         'MEDIUM',

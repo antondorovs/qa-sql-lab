@@ -105,7 +105,8 @@ statuses, address cities, address countries, and address postal codes.
 Eligibility rules flag non-positive ages and active users below the minimum
 account age.
 Coverage rules flag active users without order history and countries without
-order coverage.
+order coverage, plus countries with incomplete active-user primary address
+coverage.
 Uniqueness rules cover user emails and order numbers.
 Format rules validate user email shape.
 Temporal rules detect deletion status/timestamp mismatches, deleted-user order

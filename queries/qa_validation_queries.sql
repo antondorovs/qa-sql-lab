@@ -100,6 +100,15 @@ SELECT
 FROM country_user_order_summary
 WHERE order_count = 0;
 
+-- Countries with incomplete active-user primary address coverage
+SELECT
+    country,
+    active_user_count,
+    primary_address_count,
+    users_without_primary_address_count
+FROM primary_address_coverage_summary
+WHERE active_user_count > primary_address_count;
+
 -- Duplicate emails
 SELECT email, COUNT(*) AS duplicate_count
 FROM users
