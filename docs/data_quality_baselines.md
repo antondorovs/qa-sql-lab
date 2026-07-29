@@ -58,8 +58,9 @@ refunded payments belong to cancelled orders, successful payments stay tied to
 paid or shipped orders, new or cancelled orders do not appear with successful
 payments, and refunded payments retain their audit timestamp. Failed payments
 stay tied to new orders and remain timestamp-free until a later successful or
-refunded event exists, and pending payments stay tied to new orders and remain
-timestamp-free until settlement.
+refunded event exists, pending payments stay tied to new orders and remain
+timestamp-free until settlement, and checkout methods retain at least one
+successful payment path.
 
 ## Review the report
 

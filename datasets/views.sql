@@ -1195,6 +1195,19 @@ WITH rule_results (
             FROM payments
             WHERE payment_method NOT IN ('CARD', 'PAYPAL', 'BANK_TRANSFER')
         )
+
+    UNION ALL
+
+    SELECT
+        'payment_method_without_success',
+        'Payment methods should have at least one successful payment',
+        'MEDIUM',
+        1::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payment_method_summary
+            WHERE success_count = 0
+        )
 )
 SELECT
     rule_id,

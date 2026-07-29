@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 56 THEN
-        RAISE EXCEPTION 'Expected 56 data quality rules, found %', actual_count;
+    IF actual_count <> 57 THEN
+        RAISE EXCEPTION 'Expected 57 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -302,6 +302,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'payment_method_without_success';
+
+    IF actual_count <> 1 THEN
+        RAISE EXCEPTION
+            'Expected 1 payment method without successful payments, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'duplicate_primary_address';
 
     IF actual_count <> 0 THEN
@@ -490,9 +501,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'MEDIUM';
 
-    IF actual_count <> 10 THEN
+    IF actual_count <> 11 THEN
         RAISE EXCEPTION
-            'Expected 10 medium severity summary rules, found %',
+            'Expected 11 medium severity summary rules, found %',
             actual_count;
     END IF;
 

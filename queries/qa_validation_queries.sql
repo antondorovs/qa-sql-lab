@@ -49,6 +49,16 @@ SELECT
 FROM payment_method_summary
 ORDER BY payment_method;
 
+-- Payment methods without successful payment coverage
+SELECT
+    payment_method,
+    payment_count,
+    success_count,
+    pending_count,
+    failed_count
+FROM payment_method_summary
+WHERE success_count = 0;
+
 -- Country summary for user and order coverage review
 SELECT
     country,
