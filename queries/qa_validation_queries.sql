@@ -326,6 +326,18 @@ INNER JOIN orders o
 WHERE p.status = 'SUCCESS'
   AND o.status NOT IN ('PAID', 'SHIPPED');
 
+-- Successful payments without existing orders
+SELECT
+    p.id AS payment_id,
+    p.order_id,
+    p.status AS payment_status,
+    p.amount AS payment_amount
+FROM payments p
+LEFT JOIN orders o
+    ON p.order_id = o.id
+WHERE p.status = 'SUCCESS'
+  AND o.id IS NULL;
+
 -- Refunded payments without paid timestamp
 SELECT id, order_id, status, paid_at
 FROM payments

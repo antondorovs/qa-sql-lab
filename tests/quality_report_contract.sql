@@ -8,8 +8,8 @@ BEGIN
     INTO actual_count
     FROM data_quality_rule_report;
 
-    IF actual_count <> 57 THEN
-        RAISE EXCEPTION 'Expected 57 data quality rules, found %', actual_count;
+    IF actual_count <> 58 THEN
+        RAISE EXCEPTION 'Expected 58 data quality rules, found %', actual_count;
     END IF;
 
     SELECT COUNT(*)
@@ -28,8 +28,8 @@ BEGIN
     FROM data_quality_rule_report
     WHERE severity = 'CRITICAL';
 
-    IF actual_count <> 9 THEN
-        RAISE EXCEPTION 'Expected 9 critical data quality rules, found %', actual_count;
+    IF actual_count <> 10 THEN
+        RAISE EXCEPTION 'Expected 10 critical data quality rules, found %', actual_count;
     END IF;
 
     SELECT actual_issue_count
@@ -313,6 +313,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'successful_payment_without_order';
+
+    IF actual_count <> 1 THEN
+        RAISE EXCEPTION
+            'Expected 1 successful payment without an order, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'duplicate_primary_address';
 
     IF actual_count <> 0 THEN
@@ -479,9 +490,9 @@ BEGIN
     FROM data_quality_rule_summary
     WHERE severity = 'CRITICAL';
 
-    IF actual_count <> 9 THEN
+    IF actual_count <> 10 THEN
         RAISE EXCEPTION
-            'Expected 9 critical summary rules, found %',
+            'Expected 10 critical summary rules, found %',
             actual_count;
     END IF;
 
