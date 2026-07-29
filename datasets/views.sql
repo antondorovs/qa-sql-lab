@@ -1111,6 +1111,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'refunded_payment_without_order',
+        'Refunded payments should reference an existing order',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            LEFT JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'REFUNDED'
+              AND o.id IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'invalid_user_status',
         'User status should use an approved domain value',
         'HIGH',
