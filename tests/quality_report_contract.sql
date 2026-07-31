@@ -500,6 +500,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'paid_order_without_successful_payment';
+
+    IF actual_count <> 1 THEN
+        RAISE EXCEPTION
+            'Expected 1 paid order without a successful payment, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'shipped_order_without_successful_payment';
 
     IF actual_count <> 0 THEN

@@ -116,7 +116,7 @@ Domain rules validate status and payment-method fields against approved values.
 Amount rules flag non-positive order or payment totals.
 Relationship rules detect multiple primary addresses, orders with multiple
 payment records, and address-country mismatches.
-Payment lifecycle rules flag shipped orders without successful payments,
+Payment lifecycle rules flag paid or shipped orders without successful payments,
 cancelled orders without refunds, refunded payments on non-cancelled orders,
 successful payments on non-payable orders, new or cancelled orders that still
 have successful payments, successful, refunded, failed, or pending payments
