@@ -119,11 +119,11 @@ payment records, and address-country mismatches.
 Payment lifecycle rules flag shipped orders without successful payments,
 cancelled orders without refunds, refunded payments on non-cancelled orders,
 successful payments on non-payable orders, new or cancelled orders that still
-have successful payments, successful or refunded payments without existing
-orders, refunded payments without timestamps, failed payments with timestamps,
-and failed or pending payments on non-new orders. Pending payments are expected
-to remain timestamp-free until settlement, and payment methods keep at least
-one successful payment path.
+have successful payments, successful, refunded, or failed payments without
+existing orders, refunded payments without timestamps, failed payments with
+timestamps, and failed or pending payments on non-new orders. Pending payments
+are expected to remain timestamp-free until settlement, and payment methods
+keep at least one successful payment path.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment

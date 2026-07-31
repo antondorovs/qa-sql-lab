@@ -1127,6 +1127,22 @@ WITH rule_results (
     UNION ALL
 
     SELECT
+        'failed_payment_without_order',
+        'Failed payments should reference an existing order',
+        'CRITICAL',
+        0::BIGINT,
+        (
+            SELECT COUNT(*)
+            FROM payments p
+            LEFT JOIN orders o
+                ON p.order_id = o.id
+            WHERE p.status = 'FAILED'
+              AND o.id IS NULL
+        )
+
+    UNION ALL
+
+    SELECT
         'invalid_user_status',
         'User status should use an approved domain value',
         'HIGH',
