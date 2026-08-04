@@ -46,6 +46,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'orphan_payment';
+
+    IF actual_count <> 1 THEN
+        RAISE EXCEPTION
+            'Expected 1 payment without an existing order, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'non_positive_payment_amount';
 
     IF actual_count <> 0 THEN
