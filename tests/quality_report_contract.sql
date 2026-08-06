@@ -478,6 +478,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'active_user_without_primary_address';
+
+    IF actual_count <> 2 THEN
+        RAISE EXCEPTION
+            'Expected 2 active users without primary addresses, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'active_user_without_orders';
 
     IF actual_count <> 1 THEN
