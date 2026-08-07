@@ -12,6 +12,16 @@ BEGIN
         RAISE EXCEPTION 'Expected 61 data quality rules, found %', actual_count;
     END IF;
 
+    SELECT COUNT(*) - COUNT(DISTINCT rule_id)
+    INTO actual_count
+    FROM data_quality_rule_report;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected unique data quality rule identifiers, found % duplicates',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
