@@ -36,6 +36,18 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE severity IS NULL
+       OR severity NOT IN ('CRITICAL', 'HIGH', 'MEDIUM', 'LOW');
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected supported data quality severity values, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
