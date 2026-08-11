@@ -48,6 +48,18 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_description IS NULL
+       OR BTRIM(rule_description) = '';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected non-blank data quality rule descriptions, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
