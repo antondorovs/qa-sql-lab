@@ -25,6 +25,17 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id !~ '^[a-z][a-z0-9]*(_[a-z0-9]+)*$';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected lowercase snake_case rule identifiers, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
