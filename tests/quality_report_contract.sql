@@ -60,6 +60,18 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE actual_issue_count IS NULL
+       OR actual_issue_count < 0;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected non-negative actual issue counts, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
