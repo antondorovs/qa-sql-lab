@@ -108,6 +108,21 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE baseline_status <> CASE
+        WHEN issue_count_delta = 0 THEN 'MATCH'
+        WHEN issue_count_delta > 0 THEN 'REGRESSION'
+        ELSE 'IMPROVEMENT'
+    END;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected baseline statuses to match issue count deltas, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
