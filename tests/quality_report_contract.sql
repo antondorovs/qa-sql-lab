@@ -96,6 +96,18 @@ BEGIN
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE issue_count_delta IS NULL
+       OR issue_count_delta <> actual_issue_count - expected_issue_count;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected accurate data quality issue count deltas, found % invalid',
+            actual_count;
+    END IF;
+
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE baseline_status <> 'MATCH';
 
     IF actual_count <> 0 THEN
