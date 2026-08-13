@@ -725,6 +725,35 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH report_summary AS (
+        SELECT
+            severity,
+            COUNT(*) AS rule_count,
+            SUM(expected_issue_count) AS expected_issue_count,
+            SUM(actual_issue_count) AS actual_issue_count,
+            SUM(issue_count_delta) AS issue_count_delta,
+            COUNT(*) FILTER (
+                WHERE baseline_status <> 'MATCH'
+            ) AS deviation_count
+        FROM data_quality_rule_report
+        GROUP BY severity
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_summary AS summary
+    FULL JOIN report_summary AS report USING (severity)
+    WHERE summary.rule_count IS DISTINCT FROM report.rule_count
+       OR summary.expected_issue_count IS DISTINCT FROM report.expected_issue_count
+       OR summary.actual_issue_count IS DISTINCT FROM report.actual_issue_count
+       OR summary.issue_count_delta IS DISTINCT FROM report.issue_count_delta
+       OR summary.deviation_count IS DISTINCT FROM report.deviation_count;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected severity summary aggregates to match the rule report, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT rule_count
     INTO actual_count
     FROM data_quality_rule_summary
