@@ -774,6 +774,18 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE issue_count_delta IS DISTINCT FROM
+        actual_issue_count - expected_issue_count;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected accurate severity summary issue count deltas, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT rule_count
     INTO actual_count
     FROM data_quality_rule_summary
