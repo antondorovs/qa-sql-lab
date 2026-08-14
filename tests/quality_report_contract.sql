@@ -754,6 +754,26 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_summary
+    WHERE rule_count IS NULL
+       OR rule_count <= 0
+       OR expected_issue_count IS NULL
+       OR expected_issue_count < 0
+       OR actual_issue_count IS NULL
+       OR actual_issue_count < 0
+       OR issue_count_delta IS NULL
+       OR deviation_count IS NULL
+       OR deviation_count < 0
+       OR deviation_count > rule_count;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected valid severity summary counts, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT rule_count
     INTO actual_count
     FROM data_quality_rule_summary
