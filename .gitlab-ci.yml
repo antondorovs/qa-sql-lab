@@ -14,6 +14,12 @@ variables:
 postgresql-validation:
   stage: test
   image: postgres:16-alpine
+  retry:
+    max: 2
+    when:
+      - runner_system_failure
+      - stuck_or_timeout_failure
+      - api_failure
   services:
     - name: postgres:16-alpine
       alias: postgres
