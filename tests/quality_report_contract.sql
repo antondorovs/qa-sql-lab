@@ -725,6 +725,22 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_severities(severity) AS (
+        VALUES ('CRITICAL'), ('HIGH'), ('MEDIUM'), ('LOW')
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_severities AS expected
+    FULL JOIN data_quality_rule_summary AS summary USING (severity)
+    WHERE expected.severity IS NULL
+       OR summary.severity IS NULL;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected every supported severity in the summary, found % invalid',
+            actual_count;
+    END IF;
+
     WITH report_summary AS (
         SELECT
             severity,
