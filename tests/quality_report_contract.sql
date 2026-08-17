@@ -741,6 +741,35 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_columns(column_name, ordinal_position) AS (
+        VALUES
+            ('severity', 1),
+            ('rule_count', 2),
+            ('expected_issue_count', 3),
+            ('actual_issue_count', 4),
+            ('issue_count_delta', 5),
+            ('deviation_count', 6)
+    ),
+    actual_columns AS (
+        SELECT column_name, ordinal_position
+        FROM information_schema.columns
+        WHERE table_schema = CURRENT_SCHEMA()
+          AND table_name = 'data_quality_rule_summary'
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_columns AS expected
+    FULL JOIN actual_columns AS actual
+        USING (column_name, ordinal_position)
+    WHERE expected.column_name IS NULL
+       OR actual.column_name IS NULL;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected the data quality summary column layout, found % invalid',
+            actual_count;
+    END IF;
+
     WITH report_summary AS (
         SELECT
             severity,
