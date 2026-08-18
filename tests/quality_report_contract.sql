@@ -715,6 +715,36 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_columns(column_name, ordinal_position) AS (
+        VALUES
+            ('rule_id', 1),
+            ('rule_description', 2),
+            ('severity', 3),
+            ('expected_issue_count', 4),
+            ('actual_issue_count', 5),
+            ('issue_count_delta', 6),
+            ('baseline_status', 7)
+    ),
+    actual_columns AS (
+        SELECT column_name, ordinal_position
+        FROM information_schema.columns
+        WHERE table_schema = CURRENT_SCHEMA()
+          AND table_name = 'data_quality_rule_report'
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_columns AS expected
+    FULL JOIN actual_columns AS actual
+        USING (column_name, ordinal_position)
+    WHERE expected.column_name IS NULL
+       OR actual.column_name IS NULL;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected the data quality rule report column layout, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
