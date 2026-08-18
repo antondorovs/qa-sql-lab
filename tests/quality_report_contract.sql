@@ -745,6 +745,35 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_types(column_name, data_type) AS (
+        VALUES
+            ('rule_id', 'text'),
+            ('rule_description', 'text'),
+            ('severity', 'text'),
+            ('expected_issue_count', 'bigint'),
+            ('actual_issue_count', 'bigint'),
+            ('issue_count_delta', 'bigint'),
+            ('baseline_status', 'text')
+    ),
+    actual_types AS (
+        SELECT column_name, data_type
+        FROM information_schema.columns
+        WHERE table_schema = CURRENT_SCHEMA()
+          AND table_name = 'data_quality_rule_report'
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_types AS expected
+    FULL JOIN actual_types AS actual USING (column_name, data_type)
+    WHERE expected.column_name IS NULL
+       OR actual.column_name IS NULL;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected the data quality rule report column types, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*)
     INTO actual_count
     FROM data_quality_rule_summary;
