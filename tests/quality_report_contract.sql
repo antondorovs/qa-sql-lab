@@ -984,6 +984,28 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_counts(severity, actual_issue_count) AS (
+        VALUES
+            ('CRITICAL', 6::NUMERIC),
+            ('HIGH', 2::NUMERIC),
+            ('MEDIUM', 8::NUMERIC),
+            ('LOW', 1::NUMERIC)
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_counts AS expected
+    FULL JOIN data_quality_rule_summary AS summary USING (severity)
+    WHERE expected.severity IS NULL
+       OR summary.severity IS NULL
+       OR summary.actual_issue_count IS DISTINCT FROM
+          expected.actual_issue_count;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected severity actual issue counts, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT SUM(deviation_count)
     INTO actual_count
     FROM data_quality_rule_summary;
