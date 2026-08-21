@@ -1006,6 +1006,28 @@ BEGIN
             actual_count;
     END IF;
 
+    WITH expected_deltas(severity, issue_count_delta) AS (
+        VALUES
+            ('CRITICAL', 0::NUMERIC),
+            ('HIGH', 0::NUMERIC),
+            ('MEDIUM', 0::NUMERIC),
+            ('LOW', 0::NUMERIC)
+    )
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM expected_deltas AS expected
+    FULL JOIN data_quality_rule_summary AS summary USING (severity)
+    WHERE expected.severity IS NULL
+       OR summary.severity IS NULL
+       OR summary.issue_count_delta IS DISTINCT FROM
+          expected.issue_count_delta;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected severity issue count deltas, found % invalid',
+            actual_count;
+    END IF;
+
     SELECT SUM(deviation_count)
     INTO actual_count
     FROM data_quality_rule_summary;
