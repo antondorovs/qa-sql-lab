@@ -158,6 +158,15 @@ BEGIN
         RAISE EXCEPTION 'Expected 11 medium severity data quality rules, found %', actual_count;
     END IF;
 
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE severity = 'LOW';
+
+    IF actual_count <> 2 THEN
+        RAISE EXCEPTION 'Expected 2 low severity data quality rules, found %', actual_count;
+    END IF;
+
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
