@@ -140,6 +140,15 @@ BEGIN
         RAISE EXCEPTION 'Expected 13 critical data quality rules, found %', actual_count;
     END IF;
 
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE severity = 'HIGH';
+
+    IF actual_count <> 35 THEN
+        RAISE EXCEPTION 'Expected 35 high severity data quality rules, found %', actual_count;
+    END IF;
+
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
