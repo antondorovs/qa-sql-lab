@@ -12,6 +12,16 @@ BEGIN
         RAISE EXCEPTION 'Expected 61 data quality rules, found %', actual_count;
     END IF;
 
+    SELECT SUM(expected_issue_count)
+    INTO actual_count
+    FROM data_quality_rule_report;
+
+    IF actual_count <> 17 THEN
+        RAISE EXCEPTION
+            'Expected 17 baseline issues across all data quality rules, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*) - COUNT(DISTINCT rule_id)
     INTO actual_count
     FROM data_quality_rule_report;
