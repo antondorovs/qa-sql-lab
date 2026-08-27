@@ -841,6 +841,16 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT SUM(rule_count)
+    INTO actual_count
+    FROM data_quality_rule_summary;
+
+    IF actual_count <> 61 THEN
+        RAISE EXCEPTION
+            'Expected 61 rules across all severity summaries, found %',
+            actual_count;
+    END IF;
+
     WITH expected_severities(severity) AS (
         VALUES ('CRITICAL'), ('HIGH'), ('MEDIUM'), ('LOW')
     )
