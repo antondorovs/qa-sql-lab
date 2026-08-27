@@ -32,6 +32,16 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT SUM(issue_count_delta)
+    INTO actual_count
+    FROM data_quality_rule_report;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no net issue count delta across all data quality rules, found %',
+            actual_count;
+    END IF;
+
     SELECT COUNT(*) - COUNT(DISTINCT rule_id)
     INTO actual_count
     FROM data_quality_rule_report;
