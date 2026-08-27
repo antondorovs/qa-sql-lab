@@ -851,6 +851,16 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT SUM(expected_issue_count)
+    INTO actual_count
+    FROM data_quality_rule_summary;
+
+    IF actual_count <> 17 THEN
+        RAISE EXCEPTION
+            'Expected 17 baseline issues across all severity summaries, found %',
+            actual_count;
+    END IF;
+
     WITH expected_severities(severity) AS (
         VALUES ('CRITICAL'), ('HIGH'), ('MEDIUM'), ('LOW')
     )
