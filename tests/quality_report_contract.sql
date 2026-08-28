@@ -871,6 +871,16 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT SUM(issue_count_delta)
+    INTO actual_count
+    FROM data_quality_rule_summary;
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no net issue count delta across all severity summaries, found %',
+            actual_count;
+    END IF;
+
     WITH expected_severities(severity) AS (
         VALUES ('CRITICAL'), ('HIGH'), ('MEDIUM'), ('LOW')
     )
