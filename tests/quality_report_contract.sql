@@ -505,6 +505,17 @@ BEGIN
             actual_count;
     END IF;
 
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
+    WHERE rule_id = 'address_created_before_user';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected no addresses created before their users, found %',
+            actual_count;
+    END IF;
+
     SELECT SUM(actual_issue_count)
     INTO actual_count
     FROM data_quality_rule_report
