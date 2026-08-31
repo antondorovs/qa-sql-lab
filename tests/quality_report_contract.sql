@@ -508,6 +508,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'deleted_user_without_timestamp';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected every deleted user to include a deletion timestamp, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'address_created_before_user';
 
     IF actual_count <> 0 THEN
