@@ -519,6 +519,17 @@ BEGIN
     SELECT actual_issue_count
     INTO actual_count
     FROM data_quality_rule_report
+    WHERE rule_id = 'deleted_user_with_orders';
+
+    IF actual_count <> 0 THEN
+        RAISE EXCEPTION
+            'Expected deleted users to have no related orders, found %',
+            actual_count;
+    END IF;
+
+    SELECT actual_issue_count
+    INTO actual_count
+    FROM data_quality_rule_report
     WHERE rule_id = 'deleted_user_without_timestamp';
 
     IF actual_count <> 0 THEN
