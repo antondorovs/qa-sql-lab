@@ -49,6 +49,16 @@ SELECT
 FROM payment_method_summary
 ORDER BY payment_method;
 
+-- Payment lifecycle summary by status
+SELECT
+    payment_status,
+    payment_count,
+    total_payment_amount,
+    timestamped_payment_count,
+    missing_paid_at_count
+FROM payment_status_summary
+ORDER BY payment_status;
+
 -- Payment methods without successful payment coverage
 SELECT
     payment_method,

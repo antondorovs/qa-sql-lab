@@ -378,6 +378,16 @@ SELECT
 FROM payments
 GROUP BY payment_method;
 
+CREATE OR REPLACE VIEW payment_status_summary AS
+SELECT
+    status AS payment_status,
+    COUNT(*) AS payment_count,
+    COALESCE(SUM(amount), 0.00) AS total_payment_amount,
+    COUNT(*) FILTER (WHERE paid_at IS NOT NULL) AS timestamped_payment_count,
+    COUNT(*) FILTER (WHERE paid_at IS NULL) AS missing_paid_at_count
+FROM payments
+GROUP BY status;
+
 CREATE OR REPLACE VIEW data_quality_rule_report AS
 WITH rule_results (
     rule_id,

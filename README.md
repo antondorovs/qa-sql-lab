@@ -128,6 +128,8 @@ The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment
 method and status.
+The `payment_status_summary` view makes payment lifecycle totals and timestamp
+coverage easy to review by status.
 The `country_user_order_summary` view compares user and order coverage by
 country.
 The `primary_address_coverage_summary` view shows primary address coverage by

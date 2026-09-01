@@ -39,6 +39,64 @@ $$;
 DO $$
 DECLARE
     actual_count INTEGER;
+    actual_timestamped_count INTEGER;
+    actual_missing_count INTEGER;
+    actual_total NUMERIC(10, 2);
+BEGIN
+    SELECT COUNT(*)
+    INTO actual_count
+    FROM payment_status_summary;
+
+    IF actual_count <> 4 THEN
+        RAISE EXCEPTION
+            'Expected 4 payment status summary rows, found %', actual_count;
+    END IF;
+
+    SELECT
+        payment_count,
+        total_payment_amount,
+        timestamped_payment_count,
+        missing_paid_at_count
+    INTO
+        actual_count,
+        actual_total,
+        actual_timestamped_count,
+        actual_missing_count
+    FROM payment_status_summary
+    WHERE payment_status = 'SUCCESS';
+
+    IF actual_count <> 5
+        OR actual_total <> 480.50
+        OR actual_timestamped_count <> 5
+        OR actual_missing_count <> 0 THEN
+        RAISE EXCEPTION
+            'Unexpected SUCCESS payment summary: count=%, total=%, timestamped=%, missing=%',
+            actual_count,
+            actual_total,
+            actual_timestamped_count,
+            actual_missing_count;
+    END IF;
+
+    SELECT payment_count, timestamped_payment_count, missing_paid_at_count
+    INTO actual_count, actual_timestamped_count, actual_missing_count
+    FROM payment_status_summary
+    WHERE payment_status = 'PENDING';
+
+    IF actual_count <> 1
+        OR actual_timestamped_count <> 0
+        OR actual_missing_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected PENDING payment summary: count=%, timestamped=%, missing=%',
+            actual_count,
+            actual_timestamped_count,
+            actual_missing_count;
+    END IF;
+END
+$$;
+
+DO $$
+DECLARE
+    actual_count INTEGER;
     actual_with_payment_count INTEGER;
     actual_successful_payment_count INTEGER;
     actual_without_payment_count INTEGER;
