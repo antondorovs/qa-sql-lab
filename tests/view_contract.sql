@@ -324,6 +324,7 @@ DO $$
 DECLARE
     actual_count INTEGER;
     actual_missing_count INTEGER;
+    actual_refunded_count INTEGER;
     actual_total NUMERIC(10, 2);
 BEGIN
     SELECT COUNT(*)
@@ -336,16 +337,19 @@ BEGIN
             actual_count;
     END IF;
 
-    SELECT payment_count, total_payment_amount
-    INTO actual_count, actual_total
+    SELECT payment_count, total_payment_amount, refunded_count
+    INTO actual_count, actual_total, actual_refunded_count
     FROM payment_method_summary
     WHERE payment_method = 'CARD';
 
-    IF actual_count <> 6 OR actual_total <> 515.40 THEN
+    IF actual_count <> 6
+        OR actual_total <> 515.40
+        OR actual_refunded_count <> 1 THEN
         RAISE EXCEPTION
-            'Unexpected CARD payment summary: count=%, total=%',
+            'Unexpected CARD payment summary: count=%, total=%, refunded=%',
             actual_count,
-            actual_total;
+            actual_total,
+            actual_refunded_count;
     END IF;
 
     SELECT pending_count, missing_paid_at_count

@@ -369,6 +369,7 @@ SELECT
     COUNT(*) FILTER (WHERE status = 'SUCCESS') AS success_count,
     COUNT(*) FILTER (WHERE status = 'FAILED') AS failed_count,
     COUNT(*) FILTER (WHERE status = 'PENDING') AS pending_count,
+    COUNT(*) FILTER (WHERE status = 'REFUNDED') AS refunded_count,
     COALESCE(SUM(amount), 0.00) AS total_payment_amount,
     COALESCE(
         SUM(amount) FILTER (WHERE status = 'SUCCESS'),

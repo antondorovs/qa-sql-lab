@@ -43,6 +43,7 @@ SELECT
     success_count,
     failed_count,
     pending_count,
+    refunded_count,
     total_payment_amount,
     successful_payment_amount,
     missing_paid_at_count
