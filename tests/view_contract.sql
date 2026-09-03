@@ -91,6 +91,46 @@ BEGIN
             actual_timestamped_count,
             actual_missing_count;
     END IF;
+
+    SELECT
+        payment_count,
+        total_payment_amount,
+        timestamped_payment_count,
+        missing_paid_at_count
+    INTO
+        actual_count,
+        actual_total,
+        actual_timestamped_count,
+        actual_missing_count
+    FROM payment_status_summary
+    WHERE payment_status = 'REFUNDED';
+
+    IF actual_count <> 1
+        OR actual_total <> 60.00
+        OR actual_timestamped_count <> 1
+        OR actual_missing_count <> 0 THEN
+        RAISE EXCEPTION
+            'Unexpected REFUNDED payment summary: count=%, total=%, timestamped=%, missing=%',
+            actual_count,
+            actual_total,
+            actual_timestamped_count,
+            actual_missing_count;
+    END IF;
+
+    SELECT payment_count, timestamped_payment_count, missing_paid_at_count
+    INTO actual_count, actual_timestamped_count, actual_missing_count
+    FROM payment_status_summary
+    WHERE payment_status = 'FAILED';
+
+    IF actual_count <> 1
+        OR actual_timestamped_count <> 0
+        OR actual_missing_count <> 1 THEN
+        RAISE EXCEPTION
+            'Unexpected FAILED payment summary: count=%, timestamped=%, missing=%',
+            actual_count,
+            actual_timestamped_count,
+            actual_missing_count;
+    END IF;
 END
 $$;
 
