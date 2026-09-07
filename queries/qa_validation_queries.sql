@@ -46,6 +46,7 @@ SELECT
     refunded_count,
     total_payment_amount,
     successful_payment_amount,
+    refunded_payment_amount,
     missing_paid_at_count
 FROM payment_method_summary
 ORDER BY payment_method;

@@ -127,7 +127,8 @@ methods keep at least one successful payment path.
 The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment
-method, including successful, failed, pending, and refunded outcomes.
+method, including successful, failed, pending, and refunded outcomes with
+their amounts.
 The `payment_status_summary` view makes payment lifecycle totals and timestamp
 coverage easy to review by status, including pending, failed, and refunded
 payments.

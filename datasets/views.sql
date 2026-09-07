@@ -375,6 +375,10 @@ SELECT
         SUM(amount) FILTER (WHERE status = 'SUCCESS'),
         0.00
     ) AS successful_payment_amount,
+    COALESCE(
+        SUM(amount) FILTER (WHERE status = 'REFUNDED'),
+        0.00
+    ) AS refunded_payment_amount,
     COUNT(*) FILTER (WHERE paid_at IS NULL) AS missing_paid_at_count
 FROM payments
 GROUP BY payment_method;
