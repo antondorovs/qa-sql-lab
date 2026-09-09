@@ -368,6 +368,7 @@ DECLARE
     actual_total NUMERIC(10, 2);
     actual_successful_total NUMERIC(10, 2);
     actual_refunded_total NUMERIC(10, 2);
+    actual_unsettled_total NUMERIC(10, 2);
 BEGIN
     SELECT COUNT(*)
     INTO actual_count
@@ -408,15 +409,18 @@ BEGIN
             actual_refunded_total;
     END IF;
 
-    SELECT pending_count, missing_paid_at_count
-    INTO actual_count, actual_missing_count
+    SELECT pending_count, unsettled_payment_amount, missing_paid_at_count
+    INTO actual_count, actual_unsettled_total, actual_missing_count
     FROM payment_method_summary
     WHERE payment_method = 'BANK_TRANSFER';
 
-    IF actual_count <> 1 OR actual_missing_count <> 1 THEN
+    IF actual_count <> 1
+        OR actual_unsettled_total <> 35.99
+        OR actual_missing_count <> 1 THEN
         RAISE EXCEPTION
-            'Unexpected BANK_TRANSFER payment summary: pending=%, missing_paid_at=%',
+            'Unexpected BANK_TRANSFER payment summary: pending=%, unsettled_total=%, missing_paid_at=%',
             actual_count,
+            actual_unsettled_total,
             actual_missing_count;
     END IF;
 END
