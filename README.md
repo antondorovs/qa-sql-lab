@@ -128,7 +128,8 @@ The `data_quality_rule_summary` view aggregates rule counts and deviations by
 severity for faster triage.
 The `payment_method_summary` view aggregates checkout coverage by payment
 method, including successful, failed, pending, and refunded outcomes with
-their amounts and the unsettled balance requiring follow-up.
+their amounts, average payment size, and the unsettled balance requiring
+follow-up.
 The `payment_status_summary` view makes payment lifecycle totals and timestamp
 coverage easy to review by status, including pending, failed, and refunded
 payments.

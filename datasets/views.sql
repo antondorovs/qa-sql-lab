@@ -371,6 +371,7 @@ SELECT
     COUNT(*) FILTER (WHERE status = 'PENDING') AS pending_count,
     COUNT(*) FILTER (WHERE status = 'REFUNDED') AS refunded_count,
     COALESCE(SUM(amount), 0.00) AS total_payment_amount,
+    COALESCE(AVG(amount), 0.00) AS average_payment_amount,
     COALESCE(
         SUM(amount) FILTER (WHERE status = 'SUCCESS'),
         0.00

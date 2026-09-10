@@ -45,6 +45,7 @@ SELECT
     pending_count,
     refunded_count,
     total_payment_amount,
+    average_payment_amount,
     successful_payment_amount,
     refunded_payment_amount,
     unsettled_payment_amount,
