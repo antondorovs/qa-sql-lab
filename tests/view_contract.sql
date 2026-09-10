@@ -42,6 +42,7 @@ DECLARE
     actual_timestamped_count INTEGER;
     actual_missing_count INTEGER;
     actual_total NUMERIC(10, 2);
+    actual_average NUMERIC(10, 2);
 BEGIN
     SELECT COUNT(*)
     INTO actual_count
@@ -55,11 +56,13 @@ BEGIN
     SELECT
         payment_count,
         total_payment_amount,
+        average_payment_amount,
         timestamped_payment_count,
         missing_paid_at_count
     INTO
         actual_count,
         actual_total,
+        actual_average,
         actual_timestamped_count,
         actual_missing_count
     FROM payment_status_summary
@@ -67,12 +70,14 @@ BEGIN
 
     IF actual_count <> 5
         OR actual_total <> 480.50
+        OR actual_average <> 96.10
         OR actual_timestamped_count <> 5
         OR actual_missing_count <> 0 THEN
         RAISE EXCEPTION
-            'Unexpected SUCCESS payment summary: count=%, total=%, timestamped=%, missing=%',
+            'Unexpected SUCCESS payment summary: count=%, total=%, average=%, timestamped=%, missing=%',
             actual_count,
             actual_total,
+            actual_average,
             actual_timestamped_count,
             actual_missing_count;
     END IF;

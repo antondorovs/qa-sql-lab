@@ -393,6 +393,7 @@ SELECT
     status AS payment_status,
     COUNT(*) AS payment_count,
     COALESCE(SUM(amount), 0.00) AS total_payment_amount,
+    COALESCE(AVG(amount), 0.00) AS average_payment_amount,
     COUNT(*) FILTER (WHERE paid_at IS NOT NULL) AS timestamped_payment_count,
     COUNT(*) FILTER (WHERE paid_at IS NULL) AS missing_paid_at_count
 FROM payments

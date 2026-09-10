@@ -58,6 +58,7 @@ SELECT
     payment_status,
     payment_count,
     total_payment_amount,
+    average_payment_amount,
     timestamped_payment_count,
     missing_paid_at_count
 FROM payment_status_summary
