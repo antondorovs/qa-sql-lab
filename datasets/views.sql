@@ -384,6 +384,7 @@ SELECT
         SUM(amount) FILTER (WHERE status IN ('PENDING', 'FAILED')),
         0.00
     ) AS unsettled_payment_amount,
+    COUNT(*) FILTER (WHERE paid_at IS NOT NULL) AS timestamped_payment_count,
     COUNT(*) FILTER (WHERE paid_at IS NULL) AS missing_paid_at_count
 FROM payments
 GROUP BY payment_method;

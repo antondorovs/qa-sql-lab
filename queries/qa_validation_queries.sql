@@ -49,6 +49,7 @@ SELECT
     successful_payment_amount,
     refunded_payment_amount,
     unsettled_payment_amount,
+    timestamped_payment_count,
     missing_paid_at_count
 FROM payment_method_summary
 ORDER BY payment_method;

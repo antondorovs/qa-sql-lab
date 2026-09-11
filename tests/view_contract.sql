@@ -375,6 +375,7 @@ DECLARE
     actual_successful_total NUMERIC(10, 2);
     actual_refunded_total NUMERIC(10, 2);
     actual_unsettled_total NUMERIC(10, 2);
+    actual_timestamped_count INTEGER;
 BEGIN
     SELECT COUNT(*)
     INTO actual_count
@@ -392,14 +393,16 @@ BEGIN
         average_payment_amount,
         successful_payment_amount,
         refunded_count,
-        refunded_payment_amount
+        refunded_payment_amount,
+        timestamped_payment_count
     INTO
         actual_count,
         actual_total,
         actual_average,
         actual_successful_total,
         actual_refunded_count,
-        actual_refunded_total
+        actual_refunded_total,
+        actual_timestamped_count
     FROM payment_method_summary
     WHERE payment_method = 'CARD';
 
@@ -408,15 +411,17 @@ BEGIN
         OR actual_average <> 85.90
         OR actual_successful_total <> 405.50
         OR actual_refunded_count <> 1
-        OR actual_refunded_total <> 60.00 THEN
+        OR actual_refunded_total <> 60.00
+        OR actual_timestamped_count <> 5 THEN
         RAISE EXCEPTION
-            'Unexpected CARD payment summary: count=%, total=%, average=%, successful_total=%, refunded_count=%, refunded_total=%',
+            'Unexpected CARD payment summary: count=%, total=%, average=%, successful_total=%, refunded_count=%, refunded_total=%, timestamped=%',
             actual_count,
             actual_total,
             actual_average,
             actual_successful_total,
             actual_refunded_count,
-            actual_refunded_total;
+            actual_refunded_total,
+            actual_timestamped_count;
     END IF;
 
     SELECT pending_count, unsettled_payment_amount, missing_paid_at_count
